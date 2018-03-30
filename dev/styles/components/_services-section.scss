@@ -1,30 +1,66 @@
 $services-header-color: #fff;
 $services-testimonial-color: #fff;
 $services-height: 330px;
+$services-list-background-color: #f8f8f8;
 
 .services-header {
     position: relative;
     height: $about-height;
     background-size: cover;
     background-position: center;
+    overflow: hidden;
 
    
     h1 {
         position: absolute;
         right: 0;
-        bottom: -15px;
+        bottom: -25px;
         margin: 0;
         color: $about-header-color;
         font-size: 60px;
     }
 }
 .services-byline {
-    padding: 0 50px;
+    padding: 40px 50px 0;
 
     p {
-        font-size: 36px;
+        font-size: 32px;
         color: $highlight-text-color;
         text-transform: uppercase;
         text-align: right;
+        margin: 0;
+    }
+}
+.services-list {
+    list-style: none;
+    margin: 0;
+    padding: 50px;
+    background: $services-list-background-color;
+
+    li {
+        display: inline-block;
+        width: 30%;
+        margin-left: 3%;
+        vertical-align: top;
+
+        &:first-child {
+            margin: 0;
+        } 
+    }
+}
+.services-list__item-header {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    background-size: cover;
+    background-position: center;
+
+    p {
+        position: absolute;
+        top: 40%;
+        left: -1%;
+        font-size: 3vw;
+        color: $services-header-color;
     }
 }

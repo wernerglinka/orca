@@ -72,5 +72,17 @@ layout: default-page.html
             <p class="services-section__text">{{ homePage.servicesByline }}</p>
         </div>
     </div>
+    <div class="section-row cf">
+        <ul class="services-list">
+            {% for service in homePage.ourServices %}
+            <li>
+                <div class="services-list__item-header" style="background-image: url({{ service.image_tn }})">
+                    <p>{{ service.field_service_provided }}</p>
+                </div>
+                {{ service.body | safe }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </section>
 {% endblock %}
