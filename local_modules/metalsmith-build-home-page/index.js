@@ -33,7 +33,10 @@ function plugin() {
                 field_service_title,
                 field_service_byline,
                 field_service_image,
-                field_our_services
+                field_our_services,
+                field_projects_title,
+                field_projects_byline,
+                field_projects
             &fields[node--testimonials]=body,
                 field_author,
                 field_title,
@@ -46,7 +49,9 @@ function plugin() {
                 field_testimonials,
                 field_service_image,
                 field_our_services,
-                field_our_services.field_service_thumbnail`;
+                field_our_services.field_service_thumbnail,
+                field_projects,
+                field_projects.field_project_image`;
         return serverURL + page + query;
     };
 
@@ -137,6 +142,42 @@ function plugin() {
         return services;
     };
 
+    const getAllProjects = (homePageObj) => {
+        const projects = [];
+        const availableImages = [];
+
+        // separate testimonials from the rest of the obj
+        homePageObj.included.forEach(function (element) {
+            if (element.type === "node--projects") {
+                const thisElement = element.attributes;
+
+                let temp = {};
+                for ( let item of Object.keys(thisElement)) {
+                    for ( let prop in thisElement[item]) {
+                        if(prop === 'value') {
+                            temp[item] = thisElement[item]['value'];
+                        }
+                    }
+                }
+                // add the relationship image tn
+                temp['image_tn'] = element.relationships.field_project_image.data.id;
+                projects.push(temp);
+            }
+            if (element.type === "file--file") {
+                availableImages.push(element.attributes);
+            }
+        });
+
+        // replace the image id with the url in image_tn
+        projects.forEach(function (element) {
+            availableImages.forEach(function (thisImage){
+                if (element.image_tn === thisImage.uuid) {
+                    element.image_tn = homePageObj.serverURL + thisImage.uri.url;
+                }
+            });
+        });
+        return projects;
+    };
 
     return function (files, metalsmith, done) {
         setImmediate(done);
@@ -162,7 +203,7 @@ function plugin() {
             // get the fields for the welcome section
             homePage.siteName = getValue(homePageObj, 0, "field_site_name", "attr") || ""; // Text (formatted)
             homePage.welcomeText = getValue(homePageObj, 0, "field_welcome_text", "attr") || ""; // Text (Plain)
-            homePage.bgImageSource = serverUrl + (getValue(homePageObj, 8, "url", "rel") || ""); // Image
+            homePage.bgImageSource = serverUrl + (getValue(homePageObj, 16, "url", "rel") || ""); // Image
             // get the fields for the about section
             homePage.aboutTitle = getValue(homePageObj, 0, "field_about_title", "attr") || ""; // Text (formatted)
             homePage.aboutByline = getValue(homePageObj, 0, "field_about_byline", "attr") || ""; // Text (formatted)
@@ -175,8 +216,12 @@ function plugin() {
             // get the fields for the services section
             homePage.servicesTitle = getValue(homePageObj, 0, "field_service_title", "attr") || ""; // Text (formatted)
             homePage.servicesByline = getValue(homePageObj, 0, "field_service_byline", "attr") || ""; // Text (formatted)
-            homePage.servicesImageSource = serverUrl + (getValue(homePageObj, 4, "url", "rel") || ""); // Image
+            homePage.servicesImageSource = serverUrl + (getValue(homePageObj, 12, "url", "rel") || ""); // Image
             homePage.ourServices = getAllServices(homePageObj); // Array of all services
+            // get the fields for the projects section
+            homePage.projectsTitle = getValue(homePageObj, 0, "field_projects_title", "attr") || ""; // Text (formatted)
+            homePage.projectsByline = getValue(homePageObj, 0, "field_projects_byline", "attr") || ""; // Text (formatted)
+            homePage.projects = getAllProjects(homePageObj); // Array of all services
 
             // write the fields to the home-page data file
             fs.writeFile(dataDirectory + "home-page.json", JSON.stringify(homePage), function (err) {

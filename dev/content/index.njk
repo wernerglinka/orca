@@ -12,6 +12,7 @@ layout: default-page.html
     <p class="welcome-section__text">{{ homePage.welcomeText | safe }}</p>
 </section>
 {% endblock %}
+
 {% block about_section %}
 <section class="about-section">
     <div class="section-row cf">
@@ -62,7 +63,8 @@ layout: default-page.html
     </div>
 </section>
 {% endblock %}
-{% block services_section%}
+
+{% block services_section %}
 <section class="about-section">
     <div class="section-row cf">
         <div class="services-header section-row__left" style="background-image: url({{ homePage.servicesImageSource }})">
@@ -80,6 +82,33 @@ layout: default-page.html
                     <p>{{ service.field_service_provided }}</p>
                 </div>
                 {{ service.body | safe }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+{% endblock %}
+
+{% block projects_section %}
+<section class="projects-section">
+    <div class="section-row cf">
+        <div class="projects-header section-row__left" >
+            <h1>{{ homePage.projectsTitle }}</h1>
+        </div>
+        <div class="projects-byline section-row__right">
+            <p class="projects-section__text">{{ homePage.projectsByline }}</p>
+        </div>
+    </div>
+    <div class="section-row cf">
+        <ul class="projects-list">
+            {% for project in homePage.projects %}
+            <li>
+                <div class="projects-list__item-header" style="background-image: url({{ project.image_tn }})">
+                    <div class="projects-list__item-header-mask">
+                        <h2>{{ project.field_project_title }}</h2>
+                        <p>{{ project.field_project_overview }}</p>
+                    </div>
+                </div>
             </li>
             {% endfor %}
         </ul>
