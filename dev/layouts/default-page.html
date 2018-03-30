@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" itemscope itemtype=”http://schema.org/Article”>
+  <head>
+    {% include "layouts/partials/head.html" %}
+  </head>
+
+  <body id="onTop" class="{{ body_classes }} isLoading">
+    {% include "layouts/partials/browser-upgrade.html" %}
+
+
+    <div class="container">
+        {% include "layouts/partials/header.html" %}
+
+        {% block welcome_section %}
+        ... default welcome section content
+        {% endblock %}
+
+        
+        {% block about_section %}
+            ... default about section content
+        {% endblock %}
+
+        {% block services_section %}
+            ... default services section content
+        {% endblock %}
+        
+
+    </div>
+
+    {% block footer %}
+        {% include "layouts/partials/footer.html" %}
+    {% endblock %}
+
+    <a id="toTopButton" href="#onTop"><i class="icon icon-arrow-up"></i></a>
+    
+    {% block body_scripts %}
+        {% include "layouts/partials/scripts.html" %}
+    {% endblock %}
+
+  </body>
+</html>

@@ -1,0 +1,76 @@
+---
+title: ORCA | Home
+layout: default-page.html
+---
+{% extends "layouts/default-page.html" %}
+
+{% block welcome_section %}
+<section class="welcome-section">
+    <div class="welcome-section__header" style="background-image: url({{ homePage.bgImageSource }})">
+        <h1>{{ homePage.siteName }}</h1>
+    </div>
+    <p class="welcome-section__text">{{ homePage.welcomeText | safe }}</p>
+</section>
+{% endblock %}
+{% block about_section %}
+<section class="about-section">
+    <div class="section-row cf">
+        <div class="about-header section-row__left" style="background-image: url({{ homePage.aboutImageSource }})">
+            <h1>{{ homePage.aboutTitle }}</h1>
+        </div>
+        <div class="about-byline section-row__right">
+            <p class="about-section__text">{{ homePage.aboutByline }}</p>
+        </div>
+    </div>
+    <div class="section-row cf">
+        <div class="about-prose section-row__left">
+            <ul class="about-prose__prose-selector">
+                <li class="active">{{ homePage.aboutProse1Header}}</li>
+                <li>{{ homePage.aboutProse2Header}}</li>
+            </ul>
+            <div class="about-prose__content active">
+            {{ homePage.aboutProse1 | safe }}
+            </div>
+            <div class="about-prose__content">
+            {{ homePage.aboutProse2 | safe }}
+            </div>
+        </div>
+        <div class="about-testimonials section-row__right">
+            <ul class="about-testimonials__list">
+                {% for testimonial in homePage.testimonials %}
+                <li>
+                    <div class="quote">
+                        {{ testimonial.body | safe }}
+                    </div>
+                    <p class="quotee">
+                        {{ testimonial.field_author }}
+                    </p>
+                    {% if testimonial.field_title %}
+                    <p class="position">
+                        {{ testimonial.field_title }}
+                    </p>
+                    {% endif %}
+                    {% if testimonial.field_affiliation %}
+                    <p class="affiliation">
+                        {{ testimonial.field_affiliation }}
+                    </p>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block services_section%}
+<section class="about-section">
+    <div class="section-row cf">
+        <div class="services-header section-row__left" style="background-image: url({{ homePage.servicesImageSource }})">
+            <h1>{{ homePage.servicesTitle }}</h1>
+        </div>
+        <div class="services-byline section-row__right">
+            <p class="services-section__text">{{ homePage.servicesByline }}</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

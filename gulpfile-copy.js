@@ -1,57 +1,52 @@
-
+/*jslint regexp: true, nomen: true*/
 /*global require, process, console, __dirname*/
 
-const path = require('path');
-const browserSync = require('browser-sync').create();
+var path = require('path');
+var browserSync = require('browser-sync').create();
 
 
-const gulp = require('gulp');
-const sequence = require('gulp-sequence');
-const order = require('gulp-order');
-const sass = require('gulp-sass');
-const babel = require('gulp-babel');
-const sourcemaps = require('gulp-sourcemaps');
-const autoprefixer = require('gulp-autoprefixer');
-const concat = require('gulp-concat');
-const compressJS = require('gulp-uglify');
-const cleanCSS = require('gulp-clean-css');
+var gulp = require('gulp');
+var sequence = require('gulp-sequence');
+var order = require('gulp-order');
+var sass = require('gulp-sass');
+var babel = require('gulp-babel');
+var sourcemaps = require('gulp-sourcemaps');
+var autoprefixer = require('gulp-autoprefixer');
+var concat = require('gulp-concat');
+var compressJS = require('gulp-uglify');
+var cleanCSS = require('gulp-clean-css');
 
-const metalsmith = require('metalsmith');
-const drafts = require('metalsmith-drafts');
-const tags = require('./local_modules/metalsmith-tags-with-metadata');
-const categories = require('./local_modules/metalsmith-categories-with-metadata');
-const permalinks = require('metalsmith-permalinks');
-const collections = require('metalsmith-collections');
-const pagination = require('metalsmith-pagination');
-const layouts = require("metalsmith-layouts");
-const inPlace = require('metalsmith-in-place');
-const assets = require('metalsmith-assets');
-const sitemap = require('metalsmith-sitemap');
-const robots = require('metalsmith-robots');
-const metadata = require('metalsmith-metadata');
-const writemetadata = require('metalsmith-writemetadata');
-const renamer = require('metalsmith-renamer');
-const msIgnore = require('metalsmith-ignore');
-const msIf = require('metalsmith-if');
+var metalsmith = require('metalsmith');
+var drafts = require('metalsmith-drafts');
+var tags = require('./local_modules/metalsmith-tags-with-metadata');
+var categories = require('./local_modules/metalsmith-categories-with-metadata');
+var permalinks = require('metalsmith-permalinks');
+var collections = require('metalsmith-collections');
+var pagination = require('metalsmith-pagination');
+var layouts = require("metalsmith-layouts");
+var inPlace = require('metalsmith-in-place');
+var assets = require('metalsmith-assets');
+var sitemap = require('metalsmith-sitemap');
+var robots = require('metalsmith-robots');
+var metadata = require('metalsmith-metadata');
+var writemetadata = require('metalsmith-writemetadata');
+var renamer = require('metalsmith-renamer');
+var ignore = require('metalsmith-ignore');
 
-const buildHomePage = require('./local_modules/metalsmith-build-home-page');
-
-const monitor = require('./local_modules/metalsmith-monitor');
-
-const CaptureTag = require('nunjucks-capture');
-const dateFilter = require('nunjucks-date-filter');
+var CaptureTag = require('nunjucks-capture');
+var dateFilter = require('nunjucks-date-filter');
 const UTCdate = function (date) {
-    "use strict";
-    return date.toUTCString();
-};
+        "use strict";
+        return date.toUTCString();
+    }
 
 
-const contentPath = "dev/content";
-const assetPath = "dev/sources";
-const scriptPath = "dev/scripts";
-const stylePath = "dev/styles";
-const layoutPath = "dev/layouts";
-const destPath = "build";
+var contentPath = "./dev/content";
+var assetPath = "./dev/sources";
+var scriptPath = "./dev/scripts";
+var stylePath = "./dev/styles";
+var layoutPath = "./dev/layouts";
+var destPath = "./build";
 
 
 
@@ -60,31 +55,20 @@ function setupMetalsmith(callback) {
 
     metalsmith(__dirname)
 
-        .use(buildHomePage())
 
         .source('dev/content')
         .destination('build')
         .clean(true)
 
-        .use(metadata({
-            "homePage": "data/home-page.json"
-        }))
-
-        //.use(monitor())
-
         .use(inPlace({
             "engineOptions": {
-                root: __dirname + '/dev/',
-                filters: {
-                    dateFilter: dateFilter,
-                    UTCdate: UTCdate
-                }
+              root: __dirname + '/dev/',
+              filters: {
+                  dateFilter: dateFilter,
+                  UTCdate: UTCdate
+              }
             }
-        }))
-
-        .use(assets({
-            "source": assetPath
-        }))
+          }))
 
         .build(function (err) {
             if (err) {
@@ -143,8 +127,9 @@ gulp.task("buildDev", function (cb) {
         "scripts",
         "styles"
     ],
-            "metalsmith",
-            cb);
+        "metalsmith",
+        cb
+        );
 });
 
 // having buildDev as a dependency for the refresh task insures that they are executed before browerSync is run

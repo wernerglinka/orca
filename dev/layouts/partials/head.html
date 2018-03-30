@@ -1,0 +1,28 @@
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="cleartype" content="on">
+
+<title>{% if title %}{{ title }} {% else %} {{ site.title }} {% endif %}</title>
+
+<meta name="description" content="{{ description }}">
+
+{% if site.owner.google.verify %}
+  <meta name="google-site-verification" content="{{ site.owner.google.verify }}">
+{% endif %}
+
+{% if site.owner.bing-verify %}
+  <meta name="msvalidate.01" content="{{ site.owner.bing-verify }}">
+{% endif %}
+
+
+
+<link rel="shortcut icon" href="/favicon.ico">
+
+{% include "layouts/partials/social-metadata.html" %}
+
+<link rel="stylesheet" type="text/css" href="/assets/styles/main.css">
+
+{% if hasVideo %} {% include "layouts/partials/youtube.html" %} {% endif %}

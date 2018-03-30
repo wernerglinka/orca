@@ -1,0 +1,30 @@
+$services-header-color: #fff;
+$services-testimonial-color: #fff;
+$services-height: 330px;
+
+.services-header {
+    position: relative;
+    height: $about-height;
+    background-size: cover;
+    background-position: center;
+
+   
+    h1 {
+        position: absolute;
+        right: 0;
+        bottom: -15px;
+        margin: 0;
+        color: $about-header-color;
+        font-size: 60px;
+    }
+}
+.services-byline {
+    padding: 0 50px;
+
+    p {
+        font-size: 36px;
+        color: $highlight-text-color;
+        text-transform: uppercase;
+        text-align: right;
+    }
+}

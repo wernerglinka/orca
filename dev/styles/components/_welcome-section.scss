@@ -1,0 +1,43 @@
+$welcome-section-text-color: #fff;
+
+.welcome-section {
+    position: relative;
+    height: 100vh;
+}
+.welcome-section__header {
+    position: absolute;
+    top: 30%;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background-attachment: fixed;
+    color: $welcome-section-text-color;
+    transition: width 0.5s;
+
+    h1 {
+        font: bold 240px/1 arial, sans-serif;
+        margin: 20px 0 0 0;
+        opacity: 0.9;
+    }
+}
+.isLoading .welcome-section__header {
+    width: 0%;
+}
+.welcome-section__text {
+    position: absolute;
+    top: 70%;
+    right: 10%;
+    width: 50%;
+    text-align: right;
+    font-size: 2vw;
+
+    &:before {
+        content: "";
+        position: absolute;
+        left: -20px;
+        top: -100%;
+        height: 100px;
+        width: 10px;
+        background-color: $orca-violet;
+    }
+}
