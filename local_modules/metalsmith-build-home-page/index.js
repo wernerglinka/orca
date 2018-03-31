@@ -14,7 +14,6 @@ const commonTags = require('common-tags');
 function plugin() {
     'use strict';
 
-
     const getHomePageDataQuery = (serverURL, page) => {
         const query = commonTags.oneLineTrim`?_format=api_json
             &filter[titleFilter][condition][path]=title
@@ -55,21 +54,52 @@ function plugin() {
         return serverURL + page + query;
     };
 
+    // get field value of text fields and the url of image fields
+    // an example response object can be found in site-notes/response-example.json
+    const getFieldValue = (obj, field_name) => {
+        let fieldValue = '';
+        let relID = "";
+        let nodeAttributes = obj.data[0].attributes;
+        let nodeRelationships = obj.data[0].relationships;
+        let availableImages = [];
 
-    // function to get the field value from node and related enties
-    // the json api bundles then as attributes and relationships
-    // Assumption:
-    // all text fields are setup as Text (formatted)
-    const getValue = (obj, id, field_name, para) => {
-        if (para === 'attr') {
-            return obj.data[id].attributes[field_name].value;
+        // first loop over the node attributes
+        for ( let item of Object.keys(nodeAttributes)) {
+            if ( item === field_name) {
+                return nodeAttributes[item].value;
+            }
         }
-        if (para === "rel") {
-            return obj.included[id].attributes[field_name];
+
+        // images are included via a node relationship to the image file
+        // we first build an array of all available images in the respionse json
+        // then we search all node relationships for the file name and when found
+        // we'll find the url of the image
+
+        // build an array of all available images
+        obj.included.forEach(function (element) {
+            if (element.type === "file--file") {
+                availableImages.push(element.attributes);
+            }
+        });
+
+        // if the field name was not found in the attributes we'll loop over the included relationship fields
+        for ( let item of Object.keys(nodeRelationships)) {
+            if ( item === field_name) {
+                // find the id of the image
+                relID = nodeRelationships[item].data.id;
+
+                // return the image url if the uudi matches the relID
+                for (let index in availableImages) {
+                    if (availableImages[index].uuid === relID) {
+                        return obj.serverURL + availableImages[index].uri.url;
+                    }
+                }
+            }
         }
+        // if we didn't find any match we'll log an error
+        console.log('\n >>>> No file name match in either attributes nor oncluded relationships of the api response \n');
         return false;
     };
-
 
     const getAllTestimonials = (homePageObj) => {
         const testimonials = [];
@@ -92,7 +122,6 @@ function plugin() {
         });
         return testimonials;
     };
-
 
     const getAllServices = (homePageObj) => {
         const services = [];
@@ -148,6 +177,7 @@ function plugin() {
 
         // separate testimonials from the rest of the obj
         homePageObj.included.forEach(function (element) {
+            // find all projects
             if (element.type === "node--projects") {
                 const thisElement = element.attributes;
 
@@ -213,26 +243,26 @@ function plugin() {
             let homePage = {};
 
             // get the fields for the welcome section
-            homePage.siteName = getValue(homePageObj, 0, "field_site_name", "attr") || ""; // Text (formatted)
-            homePage.welcomeText = getValue(homePageObj, 0, "field_welcome_text", "attr") || ""; // Text (Plain)
-            homePage.bgImageSource = serverUrl + (getValue(homePageObj, 16, "url", "rel") || ""); // Image
+            homePage.siteName = getFieldValue(homePageObj, "field_site_name") || ""; // Text (formatted)
+            homePage.welcomeText = getFieldValue(homePageObj,"field_welcome_text") || ""; // Text (Plain)
+            homePage.bgImageSource = getFieldValue(homePageObj,"field_welcome_bg_img") || ""; // Image
             // get the fields for the about section
-            homePage.aboutTitle = getValue(homePageObj, 0, "field_about_title", "attr") || ""; // Text (formatted)
-            homePage.aboutByline = getValue(homePageObj, 0, "field_about_byline", "attr") || ""; // Text (formatted)
-            homePage.aboutProse1Header = getValue(homePageObj, 0, "field_about_prose_1_header", "attr") || ""; // Text (formatted)
-            homePage.aboutProse1 = getValue(homePageObj, 0, "field_about_prose", "attr") || ""; // Text (formatted)
-            homePage.aboutProse2Header = getValue(homePageObj, 0, "field_about_prose_2_header", "attr") || ""; // Text (formatted)
-            homePage.aboutProse2 = getValue(homePageObj, 0, "field_about_prose_2", "attr") || ""; // Text (formatted)
-            homePage.aboutImageSource = serverUrl + (getValue(homePageObj, 0, "url", "rel") || ""); // Image
+            homePage.aboutTitle = getFieldValue(homePageObj, "field_about_title") || ""; // Text (formatted)
+            homePage.aboutByline = getFieldValue(homePageObj, "field_about_byline") || ""; // Text (formatted)
+            homePage.aboutProse1Header = getFieldValue(homePageObj, "field_about_prose_1_header") || ""; // Text (formatted)
+            homePage.aboutProse1 = getFieldValue(homePageObj, "field_about_prose") || ""; // Text (formatted)
+            homePage.aboutProse2Header = getFieldValue(homePageObj, "field_about_prose_2_header") || ""; // Text (formatted)
+            homePage.aboutProse2 = getFieldValue(homePageObj, "field_about_prose_2") || ""; // Text (formatted)
+            homePage.aboutImageSource = getFieldValue(homePageObj, "field_about_image") || ""; // Image
             homePage.testimonials = getAllTestimonials(homePageObj); // Array of all testimonials
             // get the fields for the services section
-            homePage.servicesTitle = getValue(homePageObj, 0, "field_service_title", "attr") || ""; // Text (formatted)
-            homePage.servicesByline = getValue(homePageObj, 0, "field_service_byline", "attr") || ""; // Text (formatted)
-            homePage.servicesImageSource = serverUrl + (getValue(homePageObj, 12, "url", "rel") || ""); // Image
+            homePage.servicesTitle = getFieldValue(homePageObj, "field_service_title") || ""; // Text (formatted)
+            homePage.servicesByline = getFieldValue(homePageObj, "field_service_byline") || ""; // Text (formatted)
+            homePage.servicesImageSource = getFieldValue(homePageObj, "field_service_image") || ""; // Image
             homePage.ourServices = getAllServices(homePageObj); // Array of all services
             // get the fields for the projects section
-            homePage.projectsTitle = getValue(homePageObj, 0, "field_projects_title", "attr") || ""; // Text (formatted)
-            homePage.projectsByline = getValue(homePageObj, 0, "field_projects_byline", "attr") || ""; // Text (formatted)
+            homePage.projectsTitle = getFieldValue(homePageObj, "field_projects_title") || ""; // Text (formatted)
+            homePage.projectsByline = getFieldValue(homePageObj, "field_projects_byline") || ""; // Text (formatted)
             homePage.projects = getAllProjects(homePageObj); // Array of all services
             homePage.projectsCategories = getCategories(homePage.projects, "field_project_categories"); // Array of categories
 
