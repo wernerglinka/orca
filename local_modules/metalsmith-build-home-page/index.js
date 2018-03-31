@@ -179,6 +179,18 @@ function plugin() {
         return projects;
     };
 
+    const getCategories = (obj, categories_field) => {
+        let temp = "";
+        let categories = [];
+        obj.forEach( function (thisCategoryField) {
+            temp += " " + thisCategoryField[categories_field];
+        });
+        // turn string into array and remove duplicates 
+        categories = [ ...new Set(temp.trim().split(" ")) ];
+
+        return categories.sort();
+    };
+
     return function (files, metalsmith, done) {
         setImmediate(done);
 
@@ -222,6 +234,7 @@ function plugin() {
             homePage.projectsTitle = getValue(homePageObj, 0, "field_projects_title", "attr") || ""; // Text (formatted)
             homePage.projectsByline = getValue(homePageObj, 0, "field_projects_byline", "attr") || ""; // Text (formatted)
             homePage.projects = getAllProjects(homePageObj); // Array of all services
+            homePage.projectsCategories = getCategories(homePage.projects, "field_project_categories"); // Array of categories
 
             // write the fields to the home-page data file
             fs.writeFile(dataDirectory + "home-page.json", JSON.stringify(homePage), function (err) {

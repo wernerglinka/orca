@@ -1,6 +1,6 @@
 $projects-header-color: #fff;
-$projects-testimonial-color: #fff;
 $projects-height: 330px;
+$filter-color: #ccc;
 
 .projects-section {
     margin-bottom: 50px;
@@ -28,6 +28,24 @@ $projects-height: 330px;
         color: $highlight-text-color;
         text-transform: uppercase;
         text-align: right;
+    }
+}
+.projects-filter {
+    margin: 40% 0 0 5%;
+
+    li {
+        list-style: none;
+        display: inline-block;
+        padding: 5px 20px;
+        border: 1px solid $filter-color;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        a {
+            color: $filter-color;
+            text-decoration: none;
+        }
     }
 }
 .projects-list {
@@ -62,7 +80,7 @@ $projects-height: 330px;
     padding: 10%;
     text-align: center;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.5s;
 
     h2 {
         color: $projects-header-color;

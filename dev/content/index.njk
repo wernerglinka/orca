@@ -94,6 +94,14 @@ layout: default-page.html
     <div class="section-row cf">
         <div class="projects-header section-row__left" >
             <h1>{{ homePage.projectsTitle }}</h1>
+            <ul class="projects-filter">
+                <li><a href="#" data-id="" data-filter="*">All</a></li>
+                {% for category in homePage.projectsCategories %}
+                <li>
+                    <a href="#" data-id="" data-filter="" >{{ category }}</a>
+                </li>
+                {% endfor %}
+            </ul>
         </div>
         <div class="projects-byline section-row__right">
             <p class="projects-section__text">{{ homePage.projectsByline }}</p>
