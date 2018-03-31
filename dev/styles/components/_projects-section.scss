@@ -31,13 +31,17 @@ $filter-color: #ccc;
     }
 }
 .projects-filter {
-    margin: 40% 0 0 5%;
+    position: absolute;
+    top: 10%;
+    left: 10%;
 
     li {
         list-style: none;
-        display: inline-block;
+        display: block;
+        width: 100px;
         padding: 5px 20px;
         border: 1px solid $filter-color;
+        margin-bottom: 5px;
 
         &:hover {
             background-color: rgba(255, 255, 255, 0.2);
@@ -83,6 +87,7 @@ $filter-color: #ccc;
     transition: opacity 0.5s;
 
     h2 {
+
         color: $projects-header-color;
         padding-bottom: 10px;
         border-bottom: 1px solid $orca-tan;
