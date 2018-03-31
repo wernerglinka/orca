@@ -125,6 +125,16 @@ gulp.task("scripts", function () {
         .pipe(gulp.dest(path.join(__dirname, assetPath, "assets/scripts")));
 });
 
+gulp.task("prodScripts", function () {
+    "use strict";
+    return gulp.src(path.join(__dirname, scriptPath, "**/*.js"))
+        .pipe(babel())
+        .pipe(concat("main.js"))
+        .pipe(gulp.dest(path.join(__dirname, assetPath, "assets/scripts")));
+});
+
+
+
 // compile style sheet for development
 gulp.task("styles", function () {
     "use strict";
@@ -136,12 +146,32 @@ gulp.task("styles", function () {
         .pipe(gulp.dest(path.join(__dirname, assetPath, "assets/styles")));
 });
 
+gulp.task("prodStyles", function () {
+    "use strict";
+    return gulp.src(path.join(__dirname, stylePath, "main.scss"))
+        .pipe(sass({style: "expanded"}))
+        .pipe(autoprefixer("last 2 version"))
+        .pipe(gulp.dest(path.join(__dirname, assetPath, "assets/styles")));
+});
+
+
 gulp.task("buildDev", function (cb) {
     "use strict";
     sequence([
         "vendorScripts",
         "scripts",
         "styles"
+    ],
+            "metalsmith",
+            cb);
+});
+
+gulp.task("buildProd", function (cb) {
+    "use strict";
+    sequence([
+        "vendorScripts",
+        "prodScripts",
+        "prodStyles"
     ],
             "metalsmith",
             cb);
