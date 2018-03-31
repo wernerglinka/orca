@@ -23,7 +23,6 @@ const categories = require('./local_modules/metalsmith-categories-with-metadata'
 const permalinks = require('metalsmith-permalinks');
 const collections = require('metalsmith-collections');
 const pagination = require('metalsmith-pagination');
-const layouts = require("metalsmith-layouts");
 const inPlace = require('metalsmith-in-place');
 const assets = require('metalsmith-assets');
 const sitemap = require('metalsmith-sitemap');
