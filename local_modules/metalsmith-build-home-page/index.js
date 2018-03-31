@@ -35,7 +35,11 @@ function plugin() {
                 field_our_services,
                 field_projects_title,
                 field_projects_byline,
-                field_projects
+                field_projects,
+                field_project_postamble,
+                field_blog_title,
+                field_blog_byline,
+                field_blog_image
             &fields[node--testimonials]=body,
                 field_author,
                 field_title,
@@ -50,7 +54,8 @@ function plugin() {
                 field_our_services,
                 field_our_services.field_service_thumbnail,
                 field_projects,
-                field_projects.field_project_image`;
+                field_projects.field_project_image,
+                field_blog_image`;
         return serverURL + page + query;
     };
 
@@ -97,7 +102,7 @@ function plugin() {
             }
         }
         // if we didn't find any match we'll log an error
-        console.log('\n >>>> No file name match in either attributes nor oncluded relationships of the api response \n');
+        console.log('\n >>>> No file name match in either attributes nor included relationships of the api response \n');
         return false;
     };
 
@@ -263,8 +268,13 @@ function plugin() {
             // get the fields for the projects section
             homePage.projectsTitle = getFieldValue(homePageObj, "field_projects_title") || ""; // Text (formatted)
             homePage.projectsByline = getFieldValue(homePageObj, "field_projects_byline") || ""; // Text (formatted)
+            homePage.projectsPostamble = getFieldValue(homePageObj, "field_project_postamble") || ""; // Text (formatted)
             homePage.projects = getAllProjects(homePageObj); // Array of all services
             homePage.projectsCategories = getCategories(homePage.projects, "field_project_categories"); // Array of categories
+            // get the fields for the blog section
+            homePage.blogTitle = getFieldValue(homePageObj, "field_blog_title") || ""; // Text (formatted)
+            homePage.blogByline = getFieldValue(homePageObj, "field_blog_byline") || ""; // Text (formatted)
+            homePage.blogImageSource = getFieldValue(homePageObj, "field_blog_image") || ""; // Image
 
             // write the fields to the home-page data file
             fs.writeFile(dataDirectory + "home-page.json", JSON.stringify(homePage), function (err) {

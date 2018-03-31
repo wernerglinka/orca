@@ -121,5 +121,21 @@ layout: default-page.html
             {% endfor %}
         </ul>
     </div>
+    <div class="section-row cf">
+        <p class="projects-postamble">{{ homePage.projectsPostamble }}</p>
+    </div>
+</section>
+{% endblock %}
+
+{% block blog_section %}
+<section class="blog-section">
+    <div class="section-row cf">
+        <div class="blog-header section-row__left" style="background-image: url({{ homePage.blogImageSource }})">
+            <h1>{{ homePage.blogTitle }}</h1>
+        </div>
+        <div class="blog-byline section-row__right">
+            <p class="blog-section__text">{{ homePage.blogByline }}</p>
+        </div>
+    </div>
 </section>
 {% endblock %}

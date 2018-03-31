@@ -1,10 +1,8 @@
 $projects-header-color: #fff;
 $projects-height: 330px;
 $filter-color: #ccc;
+$postable-bg-color: #f8f8f8;
 
-.projects-section {
-    margin-bottom: 50px;
-}
 .projects-header {
     position: relative;
     height: $about-height;
@@ -97,4 +95,11 @@ $filter-color: #ccc;
     .projects-list__item-header-mask {
         opacity: 1;
     }
+}
+.projects-postamble {
+    background-color: $postable-bg-color;
+    text-align: center;
+    font-size: 24px;
+    margin: 0;
+    padding: 80px 0;
 }

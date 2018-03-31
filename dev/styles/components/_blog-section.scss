@@ -1,0 +1,38 @@
+$blog-header-color: #fff;
+$blog-testimonial-color: #fff;
+$blog-height: 330px;
+$blog-list-background-color: #f8f8f8;
+
+.blog-section {
+    margin-bottom: 100px;
+}
+.blog-header {
+    position: relative;
+    height: $about-height;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    
+
+   
+    h1 {
+        position: absolute;
+        right: 0;
+        bottom: -25px;
+        margin: 0;
+        color: $about-header-color;
+        font-size: 60px;
+    }
+}
+.blog-byline {
+    padding: 40px 50px 0;
+
+    p {
+        font-size: 32px;
+        color: $highlight-text-color;
+        text-transform: uppercase;
+        text-align: right;
+        margin: 0;
+    }
+}
