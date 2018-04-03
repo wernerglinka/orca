@@ -110,6 +110,7 @@ function plugin() {
             let temp = {};
 
             blogPostsObj.data.forEach(function (blogpost) {
+                // build blogpost metadata to be used on home page blog section
                 temp = {};
                 temp.blogTitle = blogpost.attributes.title;
                 temp.blogDate = blogpost.attributes.field_blog_date;
@@ -140,7 +141,7 @@ function plugin() {
                         ${blogpost.attributes.body.value}
                     </div>
                     {% endblock %}
-                    
+
                     {% block blogpost_sidebar %}
                     <div class="blog-author-avatar">
                         <img src="${temp.blogAuthor.avatarURL}" alt="" />
@@ -154,7 +155,6 @@ function plugin() {
                     <p class="blog-author-affiliation">
                         ${temp.blogAuthor.affiliation}
                     </p>
-
                     {% endblock %}
                     `;
 
