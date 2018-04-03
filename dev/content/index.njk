@@ -143,6 +143,9 @@ layout: default-page.html
             <li class="featured-blogpost" style="background-image: url({{ blogpost.blogTn}})">
                 <a href="/blog/{{ blogpost.blogURL }}">
                     <h2 ]>{{ blogpost.blogTitle }}</h2>
+                    <div class="blog-info">
+                        <p>by {{ blogpost.blogAuthor.name }}<br>on {{ blogpost.blogDate | dateFilter("MMMM D, YYYY") }}</p>
+                    </div>
                 </a>
             </li>
             {% endfor %}
