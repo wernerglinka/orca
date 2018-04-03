@@ -2,7 +2,7 @@
 
 The goal of the ORCA project is to build a headless Drupal8 server that feeds data into a local Metalsmith-based static-site build process. Server data are used to build pages dynamically at build time using Metalsmith as the site generator and the Nunjucks template engine.
 
-The ORCA server resides on pantheon at live-orca.pantheonsite.io and the ORCA website resides at orca.netlify.com.
+The ORCA server resides on [Pantheon](https://pantheon.io/) at http://live-orca.pantheonsite.io and the ORCA website resides on [Netlify](https://www.netlify.com/) at http://orca.netlify.com.
 
 ## ORCA Server
 The server part is implemented with Drupal 8 using the minimal installation profile, e.g. only 9 modules are enabled and there are no content types defined. [More about built-in installation profiles here](https://www.drupal.org/docs/7/install/built-in-installation-profiles-drupal-7)
