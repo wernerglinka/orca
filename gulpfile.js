@@ -69,7 +69,8 @@ function setupMetalsmith(callback) {
         .clean(true)
 
         .use(metadata({
-            "homePage": "data/home-page.json"
+            "homePage": "data/home-page.json",
+            "blogPosts": "data/blogposts.json"
         }))
 
         //.use(monitor())
@@ -86,6 +87,10 @@ function setupMetalsmith(callback) {
 
         .use(assets({
             "source": assetPath
+        }))
+
+        .use(permalinks({
+            "pattern": ":collections/:title"
         }))
 
         .build(function (err) {

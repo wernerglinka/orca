@@ -14,8 +14,6 @@ $blog-list-background-color: #f8f8f8;
     background-repeat: no-repeat;
     overflow: hidden;
     
-
-   
     h1 {
         position: absolute;
         right: 0;
@@ -34,5 +32,13 @@ $blog-list-background-color: #f8f8f8;
         text-transform: uppercase;
         text-align: right;
         margin: 0;
+    }
+}
+.blog-list {
+
+    li {
+        height: 100px;
+        background-size: cover;
+        background-position: center;
     }
 }

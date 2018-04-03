@@ -137,5 +137,16 @@ layout: default-page.html
             <p class="blog-section__text">{{ homePage.blogByline }}</p>
         </div>
     </div>
+    <div class="section-row cf">
+        <ul class="blog-list">
+            {% for index, blogpost in blogPosts %}
+            <li class="featured-blogpost" style="background-image: url({{ blogpost.blogTn}})">
+                <a href="/blog/{{ blogpost.blogURL }}">
+                    <h2 ]>{{ blogpost.blogTitle }}</h2>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </section>
 {% endblock %}

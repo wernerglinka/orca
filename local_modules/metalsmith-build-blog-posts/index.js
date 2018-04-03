@@ -115,7 +115,7 @@ function plugin() {
                 temp.blogTitle = blogpost.attributes.title;
                 temp.blogDate = blogpost.attributes.field_blog_date;
                 temp.blogURL = blogpost.attributes.title.replace(/\.$/, "").replace(/\s+/g, '-').toLowerCase();
-                temp.blogTn = getBlogTn(allImages, blogpost.relationships.field_blog_thumbnail.data.id);
+                temp.blogTn = blogPostsObj.serverURL + getBlogTn(allImages, blogpost.relationships.field_blog_thumbnail.data.id);
                 temp.blogAuthor = getBlogAuthor(allAuthors, blogpost.relationships.field_blog_author.data.id);
                 temp.blogAuthor.avatarURL = blogPostsObj.serverURL + getBlogTn(allImages, temp.blogAuthor.avatarID);
                 
