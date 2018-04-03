@@ -34,6 +34,7 @@ const msIgnore = require('metalsmith-ignore');
 const msIf = require('metalsmith-if');
 
 const buildHomePage = require('./local_modules/metalsmith-build-home-page');
+const buildBlogPosts = require('./local_modules/metalsmith-build-blog-posts');
 
 const monitor = require('./local_modules/metalsmith-monitor');
 
@@ -60,6 +61,8 @@ function setupMetalsmith(callback) {
     metalsmith(__dirname)
 
         .use(buildHomePage())
+
+        .use(buildBlogPosts())
 
         .source('dev/content')
         .destination('build')
