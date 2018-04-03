@@ -55,6 +55,7 @@ function plugin() {
                 field_our_services.field_service_thumbnail,
                 field_projects,
                 field_projects.field_project_image,
+                field_projects.field_project_categories,
                 field_blog_image`;
         return serverURL + page + query;
     };
@@ -179,14 +180,16 @@ function plugin() {
     const getAllProjects = (homePageObj) => {
         const projects = [];
         const availableImages = [];
+        const allCategories = [];
 
-        // separate testimonials from the rest of the obj
+        // separate projects from the rest of the obj
         homePageObj.included.forEach(function (element) {
             // find all projects
             if (element.type === "node--projects") {
                 const thisElement = element.attributes;
 
                 let temp = {};
+                let tempCat = [];
                 for ( let item of Object.keys(thisElement)) {
                     for ( let prop in thisElement[item]) {
                         if(prop === 'value') {
@@ -194,12 +197,24 @@ function plugin() {
                         }
                     }
                 }
-                // add the relationship image tn
+                // add the relationship image tn to the project array
                 temp['image_tn'] = element.relationships.field_project_image.data.id;
+                // add the project categories to the project array
+                tempCat = [];
+                element.relationships.field_project_categories.data.forEach(function (thisCategory) {
+                    tempCat.push(thisCategory.id);
+                });
+                temp['categories'] = tempCat;
+                // add this project to projects
                 projects.push(temp);
             }
             if (element.type === "file--file") {
                 availableImages.push(element.attributes);
+            }
+            if (element.type === "taxonomy_term--project_categories") {
+                let thisCategoryID = element.id;
+                let thisCategoryName = element.attributes.name;
+                allCategories[thisCategoryID] = thisCategoryName;
             }
         });
 
@@ -211,18 +226,34 @@ function plugin() {
                 }
             });
         });
+
+        // replace the category id with the category name
+        // loop over all projects
+        projects.forEach(function (project) {
+            let temp = [];
+            // loop over allCategories and check if a key matches
+            // a key in the project.categories array
+            for ( let item of Object.keys(allCategories)) {
+                project.categories.forEach(function (thisProjectCategory) {
+                    // build a temp categories array with array names
+                    if (thisProjectCategory === item) {
+                        temp.push(allCategories[item]);
+                    }
+                });
+            }
+            // swap categories ids with names
+            project.categories = temp;
+        });
         return projects;
     };
 
-    const getCategories = (obj, categories_field) => {
-        let temp = "";
+    const getCategories = (obj) => {
         let categories = [];
-        obj.forEach( function (thisCategoryField) {
-            temp += " " + thisCategoryField[categories_field];
+        obj.included.forEach( function (element) {
+            if (element.type === "taxonomy_term--project_categories") {
+                categories.push(element.attributes.name);
+            }
         });
-        // turn string into array and remove duplicates 
-        categories = [ ...new Set(temp.trim().split(" ")) ];
-
         return categories.sort();
     };
 
@@ -270,7 +301,7 @@ function plugin() {
             homePage.projectsByline = getFieldValue(homePageObj, "field_projects_byline") || ""; // Text (formatted)
             homePage.projectsPostamble = getFieldValue(homePageObj, "field_project_postamble") || ""; // Text (formatted)
             homePage.projects = getAllProjects(homePageObj); // Array of all services
-            homePage.projectsCategories = getCategories(homePage.projects, "field_project_categories"); // Array of categories
+            homePage.projectsCategories = getCategories(homePageObj); // Array of categories
             // get the fields for the blog section
             homePage.blogTitle = getFieldValue(homePageObj, "field_blog_title") || ""; // Text (formatted)
             homePage.blogByline = getFieldValue(homePageObj, "field_blog_byline") || ""; // Text (formatted)

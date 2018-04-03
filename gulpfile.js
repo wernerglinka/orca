@@ -44,6 +44,10 @@ const UTCdate = function (date) {
     "use strict";
     return date.toUTCString();
 };
+const makeIdentifier = function (str) {
+    "use strict";
+    return str.replace(/\s+/g, '-').toLowerCase();
+};
 
 
 const contentPath = "dev/content";
@@ -80,7 +84,8 @@ function setupMetalsmith(callback) {
                 root: __dirname + '/dev/',
                 filters: {
                     dateFilter: dateFilter,
-                    UTCdate: UTCdate
+                    UTCdate: UTCdate,
+                    makeIdentifier: makeIdentifier
                 }
             }
         }))
