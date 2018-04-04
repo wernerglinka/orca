@@ -1,6 +1,6 @@
 /*jslint regexp: true, nomen: true, vars: true, plusplus: true*/
 
-/*global document, body, window, requestAnimationFrame*/
+/*global document, body, window, requestAnimationFrame, Image*/
 (function () {
   'use strict'; // fade out
 
@@ -31,7 +31,7 @@
     })();
   }
 
-  const initialScreeState = function () {
+  const initialScreenState = function () {
     let init = function () {
       let img = new Image();
 
@@ -45,11 +45,41 @@
     return {
       init: init
     };
+  }(); // function to add line numbers wrapper to syntax code lines
+  // numbers are added via CSS counter
+
+
+  const lineNumbers = function () {
+    let init = function () {
+      const codeContainers = document.getElementsByClassName('line-numbers');
+      let codeArray, i;
+      console.log(codeContainers);
+
+      for (let i = 0; codeContainers.length > i; i++) {
+        let thisCodeContainer = codeContainers[i]; //insert a new line after open <code> tag
+
+        thisCodeContainer.querySelector('code').prepend('\n'); // add a line wrapper to each code line
+
+        codeArray = thisCodeContainer.outerHTML.split('\n'); // start with the second array element and stop before the last so we don't wrap the <pre><code> tags
+
+        for (i = 0; i < codeArray.length; i++) {
+          codeArray[i] = "<span class='code-line'>" + codeArray[i] + "</span>";
+        } // replace code
+
+
+        thisCodeContainer.outerHTML = codeArray.join('\n');
+      }
+    };
+
+    return {
+      init: init
+    };
   }(); //the document ready function
 
 
   document.addEventListener("DOMContentLoaded", function (event) {
-    initialScreeState.init();
+    initialScreenState.init();
+    lineNumbers.init();
   }); // end ready function
 })();
 //# sourceMappingURL=main.js.map

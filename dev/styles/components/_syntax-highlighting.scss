@@ -8,7 +8,6 @@ pre.line-numbers {
   .code-line:before {
     counter-increment: line-numbers;
     content: counter(line-numbers);
-    padding-right: 30px;
     color: #ccc;
   }
 }
@@ -46,7 +45,7 @@ green     #859900
 code[class*="language-"],
 pre[class*="language-"] {
   color: #657b83; /* base00 */
-  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-family: 'Andale Mono', 'Ubuntu Mono', monospace;
   font-size: 13px;
   text-align: left;
   white-space: pre;
