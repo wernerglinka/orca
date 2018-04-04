@@ -143,18 +143,21 @@ function plugin() {
                     {% endblock %}
 
                     {% block blogpost_sidebar %}
-                    <div class="blog-author-avatar">
-                        <img src="${temp.blogAuthor.avatarURL}" alt="" />
-                    </div>
-                    <p class="blog-author">
-                        ${temp.blogAuthor.name}
-                    </p>
-                    <p class="blog-author-position">
-                        ${temp.blogAuthor.position}
-                    </p>
-                    <p class="blog-author-affiliation">
-                        ${temp.blogAuthor.affiliation}
-                    </p>
+                    <ul class="author-info">
+                        <li class="blog-author-avatar">
+                            <img src="${temp.blogAuthor.avatarURL}" alt="" />
+                        </li>
+                        <li class="blog-author">
+                            ${temp.blogAuthor.name}
+                        </li>
+                        <li class="blog-author-position">
+                            ${temp.blogAuthor.position}
+                        </li>
+                        <li class="blog-author-affiliation">
+                            ${temp.blogAuthor.affiliation}
+                        </li>
+                    </ul>
+                    
                     {% endblock %}
                     `;
 
@@ -170,7 +173,7 @@ function plugin() {
             });
 
             // build the blogpost summary meta data file: /dev/content/data/blogpost.json
-            fs.writeFile(dataDirectory + "blogposts.json", JSON.stringify(blogpostSummary), function (err) {
+            fs.writeFileSync(dataDirectory + "blogposts.json", JSON.stringify(blogpostSummary), function (err) {
                 if (err) {
                     console.log(err);
                 }

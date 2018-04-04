@@ -18,33 +18,20 @@ blogpost_date: 2018-03-16
     
     <p>Pellentesque ornare sem lacinia quam venenatis vestibulum. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec ullamcorper nulla non metus auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
     
-    <p><code>&lt;div class="section-row cf"&gt;</code></p>
+    <pre>
+    <code class="language-javascript">// fade in
+    function fadeIn(el, display) {
+        el.style.opacity = 0;
+        el.style.display = display || "block";
     
-    <p><code>&nbsp; &nbsp; &lt;ul class="projects-list"&gt;</code></p>
-    
-    <p><code>&nbsp; &nbsp; {% for project in homePage.projects %}</code></p>
-    
-    <p><code>&nbsp; &nbsp; &nbsp; &nbsp; &lt;li&gt;</code></p>
-    
-    <p><code>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="projects-list__item-header" style="background-image: url({{ project.image_tn }})"&gt;</code></p>
-    
-    <p><code>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="projects-list__item-header-mask"&gt;</code></p>
-    
-    <p><code>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;h2&gt;{{ project.field_project_title }}&lt;/h2&gt;</code></p>
-    
-    <p><code>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;p&gt;{{ project.field_project_overview }}&lt;/p&gt;</code></p>
-    
-    <p><code>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</code></p>
-    
-    <p><code>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;/div&gt;</code></p>
-    
-    <p><code>&nbsp; &nbsp; &nbsp; &nbsp; &lt;/li&gt;</code></p>
-    
-    <p><code>&nbsp; &nbsp; {% endfor %}</code></p>
-    
-    <p><code>&nbsp; &nbsp; &lt;/ul&gt;</code></p>
-    
-    <p><code>&lt;/div&gt;</code></p>
+        (function fade() {
+            let val = parseFloat(el.style.opacity);
+            if (!((val += 0.1) &gt; 1)) {
+                el.style.opacity = val;
+                requestAnimationFrame(fade);
+            }
+        }());
+    }</code></pre>
     
     <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula ut id elit. Sed posuere consectetur est at lobortis. Nullam id dolor id nibh ultricies vehicula ut id elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
     
@@ -52,16 +39,19 @@ blogpost_date: 2018-03-16
 {% endblock %}
 
 {% block blogpost_sidebar %}
-<div class="blog-author-avatar">
-    <img src="http://dev-orca.pantheonsite.io/sites/default/files/blogpost-images/romy-schneider.jpg" alt="" />
-</div>
-<p class="blog-author">
-    Betty Glorious
-</p>
-<p class="blog-author-position">
-    Big City Girl
-</p>
-<p class="blog-author-affiliation">
-    Dancing Society
-</p>
+<ul class="author-info">
+    <li class="blog-author-avatar">
+        <img src="http://dev-orca.pantheonsite.io/sites/default/files/blogpost-images/romy-schneider.jpg" alt="" />
+    </li>
+    <li class="blog-author">
+        Betty Glorious
+    </li>
+    <li class="blog-author-position">
+        Big City Girl
+    </li>
+    <li class="blog-author-affiliation">
+        Dancing Society
+    </li>
+</ul>
+
 {% endblock %}

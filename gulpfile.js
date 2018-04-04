@@ -32,6 +32,7 @@ const writemetadata = require('metalsmith-writemetadata');
 const renamer = require('metalsmith-renamer');
 const msIgnore = require('metalsmith-ignore');
 const msIf = require('metalsmith-if');
+const highlightCode = require('metalsmith-prism');
 
 const buildHomePage = require('./local_modules/metalsmith-build-home-page');
 const buildBlogPosts = require('./local_modules/metalsmith-build-blog-posts');
@@ -92,6 +93,10 @@ function setupMetalsmith(callback) {
 
         .use(assets({
             "source": assetPath
+        }))
+
+        .use(highlightCode({
+            "lineNumbers": true
         }))
 
         .use(permalinks({

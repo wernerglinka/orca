@@ -308,7 +308,7 @@ function plugin() {
             homePage.blogImageSource = getFieldValue(homePageObj, "field_blog_image") || ""; // Image
 
             // write the fields to the home-page data file
-            fs.writeFile(dataDirectory + "home-page.json", JSON.stringify(homePage), function (err) {
+            fs.writeFileSync(dataDirectory + "home-page.json", JSON.stringify(homePage), function (err) {
                 if (err) {
                     console.log(err);
                 }

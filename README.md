@@ -39,6 +39,8 @@ ORCA is essentially an SPA with an attached blog. Several content types are defi
 
 Content types use various [fields](https://www.drupal.org/docs/7/nodes-content-types-and-fields/working-with-content-types-and-fields-drupal-7-and-later) to structure data logically. Relationships between content types are used to access images and taxonomy terms on the client side.
 
+Image assets are served from the server.
+
 ### API
 The API is implemented with the JSON API module. The module doesn’t need any configuration and implements the [json:api specification](http://jsonapi.org/)
 
