@@ -1,5 +1,5 @@
 $projects-header-color: #fff;
-$projects-height: 330px;
+$projects-height: 400px;
 $filter-color: #ccc;
 $postable-bg-color: #f8f8f8;
 
@@ -52,6 +52,7 @@ $postable-bg-color: #f8f8f8;
 }
 .projects-list {
     list-style: none;
+    width: 100%;
 
     li {
         float: left;
@@ -97,6 +98,7 @@ $postable-bg-color: #f8f8f8;
     }
 }
 .projects-postamble {
+    width: 100%;
     background-color: $postable-bg-color;
     text-align: center;
     font-size: 24px;

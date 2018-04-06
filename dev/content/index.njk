@@ -108,9 +108,9 @@ layout: default-page.html
         </div>
     </div>
     <div class="section-row cf">
-        <ul class="projects-list">
+        <ul class="projects-list cf">
             {% for project in homePage.projects %}
-            <li class="{% for category in project.categories %}{{ category | makeIdentifier }} {% endfor %}">
+            <li class="{% for category in project.categories %}{{ category | makeIdentifier }} {% endfor %} cf">
                 <div class="projects-list__item-header" style="background-image: url({{ project.image_tn }})">
                     <div class="projects-list__item-header-mask">
                         <h2>{{ project.field_project_title }}</h2>
@@ -121,7 +121,7 @@ layout: default-page.html
             {% endfor %}
         </ul>
     </div>
-    <div class="section-row cf">
+    <div class="section-row auto-height">
         <p class="projects-postamble">{{ homePage.projectsPostamble }}</p>
     </div>
 </section>
@@ -140,16 +140,73 @@ layout: default-page.html
     <div class="section-row cf">
         <ul class="blog-list">
             {% for index, blogpost in blogPosts %}
-            <li class="featured-blogpost" style="background-image: url({{ blogpost.blogTn}})">
+            <li>
                 <a href="/blog/{{ blogpost.blogURL }}">
-                    <h2 ]>{{ blogpost.blogTitle }}</h2>
-                    <div class="blog-info">
-                        <p>by {{ blogpost.blogAuthor.name }}<br>on {{ blogpost.blogDate | dateFilter("MMMM D, YYYY") }}</p>
+                    <div class="blog-list__item-header" style="background-image: url({{ blogpost.blogTn }})">
+                        <p>{{ blogpost.blogTitle }}</p>
                     </div>
                 </a>
+                <div class="blog-info">
+                    <p>by {{ blogpost.blogAuthor.name }}<br>on {{ blogpost.blogDate | dateFilter("MMMM D, YYYY") }}</p>
+                </div>
             </li>
             {% endfor %}
         </ul>
+    </div>
+</section>
+{% endblock %}
+
+{% block contact_section %}
+<section class="contact-section">
+    <div class="section-row cf">
+        <div class="contact-header section-row__left" style="background-image: url({{ homePage.contactImageSource }})">
+            <h1>{{ homePage.contactTitle }}</h1>
+        </div>
+        <div class="contact-byline section-row__right">
+            <p class="blog-section__text">{{ homePage.contactByline }}</p>
+        </div>
+    </div>
+    <div class="section-row cf">
+        <div class="contact-form section-row__left" >
+            <form name="contact" method="POST" netlify>
+                <div class="form-element">
+                    <input type="text" name="name" placeholder="Your Name">
+                </div>
+                <div class="form-element"> 
+                    <input type="email" name="email"  placeholder="Your Email">
+                </div>
+                <div class="form-element">
+                    <textarea name="message" placeholder="Your Message"></textarea>
+                </div>
+                <div class="form-element">
+                    <button class="button button__primary" type="submit">Send</button>
+                </div>
+            </form>
+        </div>
+        <div class="contact-info section-row__right">
+            <ul class="contact-snippets adr">
+                <li>
+                    <i class="icon icon-location"></i>
+                    <p>{{ homePage.contactAddressHeader }}</p>
+                    <p class="street-address">{{ homePage.contactStreet }}</p>
+                    <p class="locality">{{ homePage.contactCity }}, 
+                        <span class="region">{{ homePage.contactState }} </span>
+                        <span class="postal-code">{{ homePage.contactPostalCode }}</span>
+                    </p>
+                </li>
+                <li>
+                    <i class="icon icon-email"></i>
+                    <p>{{ homePage.contactEmailHeader }}</p>
+                    <p><a class="email" href="mailto:{{ homePage.contactEmail }}">{{ homePage.contactEmail }}</a></p>
+                </li>
+                <li>
+                    <i class="icon icon-phone"></i>
+                    <p>{{ homePage.contactPhoneHeader }}</p>
+                    <p><a class="tel" href="tel:{{ homePage.contactPhone }}">{{ homePage.contactPhone }}</a></p>
+                </li>
+            </ul>
+        </div>
+
     </div>
 </section>
 {% endblock %}

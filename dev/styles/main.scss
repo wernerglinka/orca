@@ -1,6 +1,7 @@
 
-@import 'variables';
-@import 'base';
+@import "variables";
+@import "base";
+@import "fonts/style";
 
 @import "components/homepage-section";
 @import "components/welcome-section";
@@ -8,7 +9,9 @@
 @import "components/services-section";
 @import "components/projects-section";
 @import "components/blog-section";
+@import "components/contact-section";
 @import "components/columns";
 @import "components/syntax-highlighting";
+@import "components/buttons";
 
 @import "blogpost";

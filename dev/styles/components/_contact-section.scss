@@ -1,0 +1,107 @@
+$contact-header-color: #fff;
+$contact-testimonial-color: #fff;
+$contact-height: 400px;
+$contact-list-background-color: #f8f8f8;
+$placeholder-text-color: #ccc;
+
+.contact-section {
+    margin-bottom: 100px;
+}
+.contact-header {
+    position: relative;
+    height: $blog-height;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    
+    h1 {
+        position: absolute;
+        right: -5px;
+        bottom: 5px;
+        margin: 0;
+        color: $blog-header-color;
+        font-size: 60px;
+        text-align: right;
+        line-height: 0.7;
+    }
+}
+.contact-byline {
+    padding: 40px 50px 0;
+
+    p {
+        font-size: 32px;
+        color: $highlight-text-color;
+        text-transform: uppercase;
+        text-align: right;
+        margin: 0;
+    }
+}
+.contact-form {
+    background-color: $contact-list-background-color;
+    padding: 50px;
+
+    .form-element {
+        padding: 10px 0;
+    }
+    input,
+    textarea {
+        width: 100%;
+        min-height: 30px;
+        padding: 10px;
+        border: none;
+        font-size: 16px;
+    }
+    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        color: $placeholder-text-color;
+        font-weight: 300;
+      }
+      ::-moz-placeholder { /* Firefox 19+ */
+        color: $placeholder-text-color;
+        font-weight: 300;
+      }
+      :-ms-input-placeholder { /* IE 10+ */
+        color: $placeholder-text-color;
+        font-weight: 300;
+      }
+      :-moz-placeholder { /* Firefox 18- */
+        color: $placeholder-text-color;
+        font-weight: 300;
+      }
+}
+.contact-info {
+    background-color: $orca-red;
+    color: $contact-header-color;
+    padding: 50px;
+}
+.contact-snippets {
+    list-style: none;
+
+    li {
+        position: relative;
+        padding-left: 60px;
+        margin-bottom: 20px;
+
+        .icon {
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            font-size: 28px;
+        }
+
+        p {
+            margin: 0;
+
+            &:first-of-type {
+                text-transform: uppercase;
+                font-weight: 700;
+                font-size: 0.9em;
+            }
+
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+        }
+    }
+}

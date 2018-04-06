@@ -39,7 +39,19 @@ function plugin() {
                 field_project_postamble,
                 field_blog_title,
                 field_blog_byline,
-                field_blog_image
+                field_blog_image,
+                field_contact_title,
+                field_contact_byline,
+                field_contact_image,
+                field_contact_address_header,
+                field_contact_street,
+                field_contact_city,
+                field_contact_state,
+                field_contact_postal_code,
+                field_contact_email_header,
+                field_contact_email,
+                field_contact_phone_header,
+                field_contact_phone
             &fields[node--testimonials]=body,
                 field_author,
                 field_title,
@@ -56,7 +68,8 @@ function plugin() {
                 field_projects,
                 field_projects.field_project_image,
                 field_projects.field_project_categories,
-                field_blog_image`;
+                field_blog_image,
+                field_contact_image`;
         return serverURL + page + query;
     };
 
@@ -72,6 +85,9 @@ function plugin() {
         // first loop over the node attributes
         for ( let item of Object.keys(nodeAttributes)) {
             if ( item === field_name) {
+                if (item === 'field_contact_email' || item === 'field_contact_phone') {
+                    return nodeAttributes[item];
+                }
                 return nodeAttributes[item].value;
             }
         }
@@ -276,6 +292,9 @@ function plugin() {
             // add serverURL to the page object, we'll need it in some support functions
             homePageObj.serverURL = serverUrl;
 
+
+
+
             let homePage = {};
 
             // get the fields for the welcome section
@@ -306,6 +325,19 @@ function plugin() {
             homePage.blogTitle = getFieldValue(homePageObj, "field_blog_title") || ""; // Text (formatted)
             homePage.blogByline = getFieldValue(homePageObj, "field_blog_byline") || ""; // Text (formatted)
             homePage.blogImageSource = getFieldValue(homePageObj, "field_blog_image") || ""; // Image
+            // get the fields for the contact section
+            homePage.contactTitle = getFieldValue(homePageObj, "field_contact_title") || ""; // Text (formatted)
+            homePage.contactByline = getFieldValue(homePageObj, "field_contact_byline") || ""; // Text (formatted)
+            homePage.contactImageSource = getFieldValue(homePageObj, "field_contact_image") || ""; // Image
+            homePage.contactAddressHeader = getFieldValue(homePageObj, "field_contact_address_header") || ""; // Text (formatted)
+            homePage.contactStreet = getFieldValue(homePageObj, "field_contact_street") || ""; // Text (formatted)
+            homePage.contactCity = getFieldValue(homePageObj, "field_contact_city") || ""; // Text (formatted)
+            homePage.contactState = getFieldValue(homePageObj, "field_contact_state") || ""; // Text (formatted)
+            homePage.contactPostalCode = getFieldValue(homePageObj, "field_contact_postal_code") || ""; // Text (formatted)
+            homePage.contactPhoneHeader = getFieldValue(homePageObj, "field_contact_phone_header") || ""; // Text (formatted)
+            homePage.contactPhone = getFieldValue(homePageObj, "field_contact_phone") || ""; // Text (formatted)
+            homePage.contactEmailHeader = getFieldValue(homePageObj, "field_contact_email_header") || ""; // Text (formatted)
+            homePage.contactEmail = getFieldValue(homePageObj, "field_contact_email") || ""; // Text (formatted)
 
             // write the fields to the home-page data file
             fs.writeFileSync(dataDirectory + "home-page.json", JSON.stringify(homePage), function (err) {

@@ -1,10 +1,10 @@
 $about-header-color: #fff;
 $about-testimonial-color: #fff;
-$about-height: 330px;
+$about-height: 400px;
 
 .about-header {
     position: relative;
-    height: $about-height;
+    min-height: $about-height;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -31,7 +31,7 @@ $about-height: 330px;
 }
 .about-prose {
     padding: 50px;
-    height: $about-height;
+    min-height: $about-height;
 }
 .about-prose__prose-selector {
     margin: 0;
@@ -56,7 +56,6 @@ $about-height: 330px;
 }
 .about-testimonials {
    background-color: $orca-red;
-   height: $about-height;
    padding: 50px;
 }
 .about-testimonials__list {

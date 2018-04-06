@@ -1,0 +1,12 @@
+$button-text-color: #fff;
+
+.button {
+    border: none;
+    font-size: 16px;
+    padding: 10px 30px;
+
+    &.button__primary {
+        background-color: $orca-red;
+        color: $button-text-color;
+    }
+}

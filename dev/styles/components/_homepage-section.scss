@@ -1,13 +1,13 @@
 .section-row {
     width: 100%;
+    min-height: 400px;
+    display: flex;
+
+    &.auto-height {
+        min-height: 0;
+    }
 }
 .section-row__left,
 .section-row__right {
-    width: 50%;
-}
-.section-row__left {
-    float: left;
-}
-.section-row__right {
-    margin-left: 50%;
+    flex-basis: 50%;
 }
