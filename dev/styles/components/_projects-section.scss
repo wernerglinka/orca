@@ -5,7 +5,7 @@ $postable-bg-color: #f8f8f8;
 
 .projects-header {
     position: relative;
-    height: $about-height;
+    min-height: $about-height;
     background-color: $orca-red;
 
    
@@ -33,6 +33,11 @@ $postable-bg-color: #f8f8f8;
     top: 10%;
     left: 10%;
 
+    @media (max-width: 500px) {
+        top: 30px;
+        left: 20px;
+    }
+
     li {
         list-style: none;
         display: block;
@@ -58,6 +63,14 @@ $postable-bg-color: #f8f8f8;
         float: left;
         width: 25%;
         vertical-align: top;
+
+        @media (max-width: 600px) {
+            width: 50%;
+        }
+
+        @media (max-width: 400px) {
+            width: 100%;
+        }
     }
 }
 
@@ -90,6 +103,14 @@ $postable-bg-color: #f8f8f8;
         color: $projects-header-color;
         padding-bottom: 10px;
         border-bottom: 1px solid $orca-tan;
+        font-size: 20px;
+        line-height: 1;
+        margin-top: 10px;
+
+        & + p {
+            line-height: 1;
+            font-size: 14px;
+        }
     }
 }
 .projects-list__item-header:hover {
@@ -104,4 +125,8 @@ $postable-bg-color: #f8f8f8;
     font-size: 24px;
     margin: 0;
     padding: 80px 0;
+
+    @media (max-width: 800px) {
+        padding: 40px;
+    }
 }

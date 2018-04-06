@@ -11,3 +11,14 @@
 .section-row__right {
     flex-basis: 50%;
 }
+
+@media (max-width: 700px) {
+    .section-row {
+        display: block;
+    }
+
+    .section-row__left,
+    .section-row__right {
+        width: 100%;
+    }
+}

@@ -1,6 +1,5 @@
 $contact-header-color: #fff;
 $contact-testimonial-color: #fff;
-$contact-height: 400px;
 $contact-list-background-color: #f8f8f8;
 $placeholder-text-color: #ccc;
 
@@ -9,7 +8,6 @@ $placeholder-text-color: #ccc;
 }
 .contact-header {
     position: relative;
-    height: $blog-height;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -40,6 +38,10 @@ $placeholder-text-color: #ccc;
 .contact-form {
     background-color: $contact-list-background-color;
     padding: 50px;
+
+    @media (max-width: 800px) {
+        padding: 50px 20px;
+    }
 
     .form-element {
         padding: 10px 0;

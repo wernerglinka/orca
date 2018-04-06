@@ -75,7 +75,7 @@ layout: default-page.html
         </div>
     </div>
     <div class="section-row cf">
-        <ul class="services-list">
+        <ul class="services-list cf">
             {% for service in homePage.ourServices %}
             <li>
                 <div class="services-list__item-header" style="background-image: url({{ service.image_tn }})">
@@ -107,7 +107,7 @@ layout: default-page.html
             <p class="projects-section__text">{{ homePage.projectsByline }}</p>
         </div>
     </div>
-    <div class="section-row cf">
+    <div class="section-row cf auto-height">
         <ul class="projects-list cf">
             {% for project in homePage.projects %}
             <li class="{% for category in project.categories %}{{ category | makeIdentifier }} {% endfor %} cf">

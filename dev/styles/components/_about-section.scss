@@ -32,6 +32,10 @@ $about-height: 400px;
 .about-prose {
     padding: 50px;
     min-height: $about-height;
+
+    @media (max-width: 500px) {
+        padding: 30px 20px;
+    }
 }
 .about-prose__prose-selector {
     margin: 0;
@@ -57,6 +61,10 @@ $about-height: 400px;
 .about-testimonials {
    background-color: $orca-red;
    padding: 50px;
+
+   @media (max-width: 500px) {
+    padding: 30px 20px;
+}
 }
 .about-testimonials__list {
     margin: 0;

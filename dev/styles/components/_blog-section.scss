@@ -1,11 +1,9 @@
 $blog-header-color: #fff;
 $blog-testimonial-color: #fff;
-$blog-height: 400px;
 $blog-list-background-color: #f8f8f8;
 
 .blog-header {
     position: relative;
-    height: $blog-height;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -49,6 +47,12 @@ $blog-list-background-color: #f8f8f8;
         &:first-child {
             margin: 0;
         } 
+
+        @media (max-width: 500px) {
+            display: block;
+            width: auto;
+            margin: 0;
+        }
     }
 }
 .blog-list__item-header {
@@ -64,10 +68,18 @@ $blog-list-background-color: #f8f8f8;
         position: absolute;
         top: 10%;
         left: -1%;
-        font-size: 3vw;
+        font-size: 36px;
         line-height: 1;
         color: $blog-header-color;
         text-shadow: $default-text-shadow;
+
+        @media (max-width: 1280px) {
+            font-size: 3vw;
+        }
+
+        @media (max-width: 500px) {
+            font-size: 7vw;
+        }
     }
 
     &:hover {

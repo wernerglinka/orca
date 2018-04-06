@@ -5,7 +5,7 @@ $services-list-background-color: #f8f8f8;
 
 .services-header {
     position: relative;
-    height: $about-height;
+    min-height: $about-height;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -14,10 +14,12 @@ $services-list-background-color: #f8f8f8;
     h1 {
         position: absolute;
         right: 0;
-        bottom: -25px;
+        bottom: 5px;
         margin: 0;
         color: $about-header-color;
         font-size: 60px;
+        text-align: right;
+        line-height: 0.7;
     }
 }
 .services-byline {
@@ -37,15 +39,25 @@ $services-list-background-color: #f8f8f8;
     padding: 50px;
     background: $services-list-background-color;
 
+    @media (max-width: 800px) {
+        padding: 20px;
+    }
+
     li {
-        display: inline-block;
+        float: left;
         width: 30%;
-        margin-left: 3%;
+        margin-left: 5%;
         vertical-align: top;
 
         &:first-child {
             margin: 0;
         } 
+
+        @media (max-width: 500px) {
+            display: block;
+            width: auto;
+            margin: 0;
+        }
     }
 }
 .services-list__item-header {
@@ -62,5 +74,9 @@ $services-list-background-color: #f8f8f8;
         left: -1%;
         font-size: 3vw;
         color: $services-header-color;
+
+        @media (max-width: 500px) {
+            font-size: 8vw;
+        }
     }
 }

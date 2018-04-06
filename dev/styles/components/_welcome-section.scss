@@ -11,12 +11,20 @@ $welcome-section-text-color: #fff;
     width: 100%;
     height: 200px;
     background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
     color: $welcome-section-text-color;
     transition: width 0.5s;
 
+    @media (max-width: 700px) {
+        top: 10%;
+    }
+
     h1 {
-        font: bold 240px/1 arial, sans-serif;
-        margin: 20px 0 0 0;
+        position: absolute;
+        bottom: -20vw;
+        left: 30px;
+        font: bold 20vw/1 arial, sans-serif;
         opacity: 0.9;
     }
 }
@@ -31,13 +39,22 @@ $welcome-section-text-color: #fff;
     text-align: right;
     font-size: 2vw;
 
+    @media (max-width: 700px) {
+        top: 50%;
+    }
+
     &:before {
         content: "";
         position: absolute;
         left: -20px;
-        top: -100%;
+        top: -50%;
         height: 100px;
         width: 10px;
         background-color: $orca-violet;
+    }
+
+    @media (max-width: 800px) {
+        font-size: 18px;
+        width: 80%;
     }
 }
