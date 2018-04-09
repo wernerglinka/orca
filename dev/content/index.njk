@@ -140,16 +140,18 @@ layout: default-page.html
     <div class="section-row cf">
         <ul class="blog-list">
             {% for index, blogpost in blogPosts %}
-            <li>
-                <a href="/blog/{{ blogpost.blogURL }}">
-                    <div class="blog-list__item-header" style="background-image: url({{ blogpost.blogTn }})">
-                        <p>{{ blogpost.blogTitle }}</p>
+                {% if blogpost.blogIsFeatured %}
+                <li>
+                    <a href="/blog/{{ blogpost.blogURL }}">
+                        <div class="blog-list__item-header" style="background-image: url({{ blogpost.blogTn }})">
+                            <p>{{ blogpost.blogTitle }}</p>
+                        </div>
+                    </a>
+                    <div class="blog-info">
+                        <p>by {{ blogpost.blogAuthor.name }}<br>on {{ blogpost.blogDate | dateFilter("MMMM D, YYYY") }}</p>
                     </div>
-                </a>
-                <div class="blog-info">
-                    <p>by {{ blogpost.blogAuthor.name }}<br>on {{ blogpost.blogDate | dateFilter("MMMM D, YYYY") }}</p>
-                </div>
-            </li>
+                </li>
+                {% endif %}
             {% endfor %}
         </ul>
     </div>

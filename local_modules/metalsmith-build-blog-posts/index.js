@@ -20,7 +20,10 @@ function plugin() {
                 body,
                 field_blog_date,
                 field_blog_author,
-                field_blog_thumbnail
+                field_blog_thumbnail,
+                field_blog_is_featured,
+                field_blog_category,
+                field_blog_tags
             &fields[node--blog_author]=title,
                 field_position,
                 field_author_affiliation,
@@ -28,7 +31,9 @@ function plugin() {
             &field[file--file]=uri
             &include=field_blog_author,
                 field_blog_thumbnail,
-                field_blog_author.field_avatar`;
+                field_blog_author.field_avatar,
+                field_blog_category,
+                field_blog_tags`;
         return serverURL + page + query;
     };
 
@@ -81,6 +86,48 @@ function plugin() {
         }
     };
 
+    const getCategories = (obj, taxonomy) => {
+        let categories = [];
+        let temp = {};
+        obj.included.forEach( function (element) {
+            temp = {};
+            if (element.type === taxonomy) {
+                temp.id = element.attributes.uuid;
+                temp.name = element.attributes.name;
+                categories.push(temp);
+            }
+        });
+        return categories.sort();
+    };
+
+    const getBlogCategories = (objAll, obj, taxonomy) => {
+        let categories = [];
+        let allCategories = getCategories(objAll, obj.relationships[taxonomy].data[0].type);
+
+        // build an array of category ids for this blogpost
+        obj.relationships[taxonomy].data.forEach( function (element, index) {
+            categories[index] = element.id;
+        });
+
+        // replace the category id with the category name
+        // loop over all categories
+        let temp = [];
+        // loop over allCategories and check if a key matches
+        // a key in the categories array
+        for ( let item of Object.keys(allCategories)) {
+            categories.forEach(function (category) {
+                // build a temp categories array with array names
+                if (category === allCategories[item].id) {
+                    temp.push(allCategories[item].name);
+                }
+            });
+        }
+        // swap categories ids with names
+        categories = temp;
+
+        return categories.sort();
+    };
+
 
     return function (files, metalsmith, done) {
         setImmediate(done);
@@ -113,12 +160,15 @@ function plugin() {
                 // build blogpost metadata to be used on home page blog section
                 temp = {};
                 temp.blogTitle = blogpost.attributes.title;
+                temp.blogIsFeatured = blogpost.attributes.field_blog_is_featured;
                 temp.blogDate = blogpost.attributes.field_blog_date;
                 temp.blogURL = blogpost.attributes.title.replace(/\.$/, "").replace(/\s+/g, '-').toLowerCase();
                 temp.blogTn = blogPostsObj.serverURL + getBlogTn(allImages, blogpost.relationships.field_blog_thumbnail.data.id);
                 temp.blogAuthor = getBlogAuthor(allAuthors, blogpost.relationships.field_blog_author.data.id);
                 temp.blogAuthor.avatarURL = blogPostsObj.serverURL + getBlogTn(allImages, temp.blogAuthor.avatarID);
-                
+                temp.blogCategories = getBlogCategories(blogPostsObj, blogpost, "field_blog_category");
+                temp.blogTags = getBlogCategories(blogPostsObj, blogpost, "field_blog_tags");
+
                 // replace any trailing dot, convert spaces to dashes and lower case.
                 const fileName = blogpost.attributes.title.replace(/\.$/, "").replace(/\s+/g, '-').toLowerCase() + ".njk";
                 const fileContent = commonTags.html`

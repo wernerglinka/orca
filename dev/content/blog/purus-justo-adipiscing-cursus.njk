@@ -1,0 +1,42 @@
+---
+layout: blog-page.html
+title: Purus Justo Adipiscing Cursus
+description: 
+page_class: blogpost
+blogpost_date: 2018-01-24
+---
+
+{% extends "layouts/default-blogpost.html" %}
+
+{% block blogpost_body %}
+<h1>Purus Justo Adipiscing Cursus</h1>
+<p class="blog-date">
+    {{ blogpost_date | dateFilter("MMMM D, YYYY") }}
+</p>
+<div class='blogpost-content'>
+    <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum id ligula porta felis euismod semper. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam quis risus eget urna mollis ornare vel eu leo. Aenean lacinia bibendum nulla sed consectetur. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+    
+    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit. Etiam porta sem malesuada magna mollis euismod. Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue. Cras mattis consectetur purus sit amet fermentum.</p>
+    
+    <p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.</p>
+    
+</div>
+{% endblock %}
+
+{% block blogpost_sidebar %}
+<ul class="author-info">
+    <li class="blog-author-avatar">
+        <img src="http://dev-orca.pantheonsite.io/sites/default/files/blogpost-images/donna-summers.jpg" alt="" />
+    </li>
+    <li class="blog-author">
+        Cloe Turnshoe
+    </li>
+    <li class="blog-author-position">
+        Piano Repair
+    </li>
+    <li class="blog-author-affiliation">
+        Owner - Piano Repair
+    </li>
+</ul>
+
+{% endblock %}
