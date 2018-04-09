@@ -4,6 +4,8 @@ title: Ligula Ullamcorper Quam Magna
 description: 
 page_class: blogpost
 blogpost_date: 2017-08-08
+blogpost_tags: [kullam]
+blogpost_categories: [Ligula]
 ---
 
 {% extends "layouts/default-blogpost.html" %}
@@ -35,6 +37,13 @@ blogpost_date: 2017-08-08
     <li class="blog-author-affiliation">
         Owner - Piano Repair
     </li>
+</ul>
+
+<ul class="tags-list">
+    <h2>Tags</h2>
+    {% for tag in blogpost_tags %}
+        <li>{{ tag }}</li>
+    {% endfor %}
 </ul>
 
 {% endblock %}

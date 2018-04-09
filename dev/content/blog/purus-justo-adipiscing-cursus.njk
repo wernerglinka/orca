@@ -4,6 +4,8 @@ title: Purus Justo Adipiscing Cursus
 description: 
 page_class: blogpost
 blogpost_date: 2018-01-24
+blogpost_tags: [ergo,kullam,numus,sussi]
+blogpost_categories: [Tellus]
 ---
 
 {% extends "layouts/default-blogpost.html" %}
@@ -37,6 +39,13 @@ blogpost_date: 2018-01-24
     <li class="blog-author-affiliation">
         Owner - Piano Repair
     </li>
+</ul>
+
+<ul class="tags-list">
+    <h2>Tags</h2>
+    {% for tag in blogpost_tags %}
+        <li>{{ tag }}</li>
+    {% endfor %}
 </ul>
 
 {% endblock %}

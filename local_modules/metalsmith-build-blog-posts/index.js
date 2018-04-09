@@ -169,6 +169,9 @@ function plugin() {
                 temp.blogCategories = getBlogCategories(blogPostsObj, blogpost, "field_blog_category");
                 temp.blogTags = getBlogCategories(blogPostsObj, blogpost, "field_blog_tags");
 
+                let blogTags = temp.blogTags.join(",");
+                let blogCategories = temp.blogCategories.join(",");
+
                 // replace any trailing dot, convert spaces to dashes and lower case.
                 const fileName = blogpost.attributes.title.replace(/\.$/, "").replace(/\s+/g, '-').toLowerCase() + ".njk";
                 const fileContent = commonTags.html`
@@ -178,6 +181,8 @@ function plugin() {
                     description: ${blogpost.attributes.body.summary}
                     page_class: blogpost
                     blogpost_date: ${blogpost.attributes.field_blog_date}
+                    blogpost_tags: [${blogTags}]
+                    blogpost_categories: [${blogCategories}]
                     ---
 
                     {% extends "layouts/default-blogpost.html" %}
@@ -207,7 +212,14 @@ function plugin() {
                             ${temp.blogAuthor.affiliation}
                         </li>
                     </ul>
-                    
+
+                    <ul class="tags-list">
+                        <h2>Tags</h2>
+                        {% for tag in blogpost_tags %}
+                            <li>{{ tag }}</li>
+                        {% endfor %}
+                    </ul>
+
                     {% endblock %}
                     `;
 

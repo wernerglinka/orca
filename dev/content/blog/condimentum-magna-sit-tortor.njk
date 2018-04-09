@@ -4,6 +4,8 @@ title: Condimentum Magna Sit Tortor
 description: Maecenas faucibus mollis interdum. Cras mattis consectetur purus sit amet fermentum.
 page_class: blogpost
 blogpost_date: 2018-04-02
+blogpost_tags: [ergo,numus]
+blogpost_categories: [Aenean]
 ---
 
 {% extends "layouts/default-blogpost.html" %}
@@ -39,6 +41,13 @@ blogpost_date: 2018-04-02
     <li class="blog-author-affiliation">
         Owner - Piano Repair
     </li>
+</ul>
+
+<ul class="tags-list">
+    <h2>Tags</h2>
+    {% for tag in blogpost_tags %}
+        <li>{{ tag }}</li>
+    {% endfor %}
 </ul>
 
 {% endblock %}
