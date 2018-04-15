@@ -50,7 +50,7 @@ The author of the videos uses [Postman](https://www.getpostman.com/)  to guide t
 
 API queries can be tried out with Postman and then can be used in the ORCA client without modifications.
 
-## ORCA Client
+### ORCA Client
 The ORCA Client really is a static-site build process that fetches data from the ORCA Server during the build so all pages are fully build before the site is deployed. None of the pages is build or augmented through AJAX. That has the benefit that search engine spiders can index every page with all the content available… great for SEO.
 
 The build process is Node/Javascript based and uses [Gulp](https://gulpjs.com/), [Metalsmith](http://www.metalsmith.io/) and the template engine [Nunjucks](https://mozilla.github.io/nunjucks/templating.html).
