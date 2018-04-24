@@ -24,6 +24,7 @@ const permalinks = require('metalsmith-permalinks');
 const collections = require('metalsmith-collections');
 const pagination = require('metalsmith-pagination');
 const inPlace = require('metalsmith-in-place');
+const layouts = require('metalsmith-layouts');
 const assets = require('metalsmith-assets');
 const sitemap = require('metalsmith-sitemap');
 const robots = require('metalsmith-robots');
@@ -39,18 +40,54 @@ const buildBlogPosts = require('./local_modules/metalsmith-build-blog-posts');
 
 const monitor = require('./local_modules/metalsmith-monitor');
 
-const CaptureTag = require('nunjucks-capture');
-const dateFilter = require('nunjucks-date-filter');
-const UTCdate = function (date) {
-    "use strict";
-    return date.toUTCString();
-};
-const makeIdentifier = function (str) {
-    "use strict";
-    return str.replace(/\s+/g, '-').toLowerCase();
-};
+// template engine
+const nunjucks = require("nunjucks");
+const CaptureTag = require("nunjucks-capture");
+const dateFilter = require("nunjucks-date-filter");
 
+nunjucks
+    .configure(["./dev/layouts", "./dev/layouts/partials"], {watch: false, autoescape: false})
+    .addExtension("CaptureTag", new CaptureTag())
 
+    // converts a date into a UTC string. Needed for XML dates
+    .addFilter("UTCdate", function (date) {
+        "use strict";
+        return date.toUTCString();
+    })
+    .addFilter("makeIdentifier", function (str) {
+        "use strict";
+        return str.replace(/\s+/g, '-').toLowerCase();
+    })
+    .addFilter("is_string", function (obj) {
+        "use strict";
+        return typeof obj === "string";
+    })
+    .addFilter("is_array", function (obj) {
+        "use strict";
+        return Array.isArray(obj);
+    })
+    .addFilter("dateFilter", dateFilter)
+    // replaces a file extension with a "/". Needed in generating custom XML feeds
+    .addFilter("makePermalink", function (obj) {
+        "use strict";
+        return obj.replace(/.html/g, "/");
+    })
+    // when building an XML page any text that contains html "<", ">" and "&" characters need to be escaped
+    .addFilter("escapeHTML", function (text) {
+        "use strict";
+        return (text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"));
+    })
+    // strips all html from a string
+    .addFilter("stripHTML", function (htmlString) {
+        "use strict";
+        return htmlString.replace(/<[^>]+>/g, "");
+    })
+    .addFilter("spaceToDash", function (string) {
+        "use strict";
+        return string.replace(/\s+/g, "-");
+    });
+
+const sourcePath = "/dev/";
 const contentPath = "dev/content";
 const assetPath = "dev/sources";
 const scriptPath = "dev/scripts";
@@ -58,37 +95,107 @@ const stylePath = "dev/styles";
 const layoutPath = "dev/layouts";
 const destPath = "build";
 
-
-
 function setupMetalsmith(callback) {
     'use strict';
 
     metalsmith(__dirname)
-
-        .use(buildHomePage())
-
-        .use(buildBlogPosts())
-
-        .source('dev/content')
-        .destination('build')
+        .source(contentPath)
+        .destination
+        (destPath)
         .clean(true)
 
+        // create the build timestamp
+        .metadata({
+            "buildDate": new Date()
+        })
+
+        // get metadata from the yml files in dev/content/data
         .use(metadata({
-            "homePage": "data/home-page.json",
-            "blogPosts": "data/blogposts.json"
+            "site": "data/site.yml"
         }))
+
+        // ignore these files in the build process
+        .use(msIgnore(
+            "data/**/*"
+        ))
+
+        // get the content from ORCA Server
+        .use(buildHomePage())
+        .use(buildBlogPosts())
 
         //.use(monitor())
 
-        .use(inPlace({
-            "engineOptions": {
-                root: __dirname + '/dev/',
-                filters: {
-                    dateFilter: dateFilter,
-                    UTCdate: UTCdate,
-                    makeIdentifier: makeIdentifier
+        //.use(() => {
+        //    console.log(__dirname);
+        //})
+
+        .use(categories({
+            "handle": "categories",
+            "path": "blog/categories/:category.html",
+            "pathPage": "blog/categories/:category/:num/index.html",
+            "perPage": 5,
+            "layout": "blog.html",
+            "sortBy": "date",
+            "reverse": true,
+            "skipMetadata": false,
+            "addMetadata": {
+                "body_classes": "blog has-sidebar abc123",
+                "is_category_page": true
+            },
+            "slug": {
+                "mode": "rfc3986"
+            }
+        }))
+
+        .use(tags({
+            "handle": "tags",
+            "path": "blog/topics/:tag.html",
+            "pathPage": "blog/topics/:tag/:num/index.html",
+            "perPage": 5,
+            "layout": "blog.html",
+            "sortBy": "date",
+            "reverse": true,
+            "skipMetadata": false,
+            "addMetadata": {
+                "body_classes": "blog has-sidebar",
+                "is_tag_page": true
+            },
+            "slug": {
+                "mode": "rfc3986"
+            }
+        }))
+
+        .use(collections({
+            "blog": {
+                "sortBy": "date",
+                "reverse": true
+            }
+        }))
+
+        .use(pagination({
+            "collections.blog": {
+                "perPage": 5,
+                "layout": "blog.html",
+                "first": "blog/1/index.html",
+                "path": "blog/:num/index.html",
+                "pageMetadata": {
+                    "title": "The Blog",
+                    "body_classes": "blogpost"
                 }
             }
+        }))
+
+        // apply templates
+        .use(inPlace({
+            "engine": "nunjucks",
+            "directory": "./dev/layouts",
+            "partials": "./dev/layouts/partials"
+        }))
+
+        .use(layouts({
+            "engine": "nunjucks",
+            "directory": "./dev/layouts",
+            "partials": "./dev/layouts/partials"
         }))
 
         .use(assets({
@@ -102,6 +209,14 @@ function setupMetalsmith(callback) {
         .use(permalinks({
             "pattern": ":collections/:title"
         }))
+
+        .use(writemetadata({
+            pattern: ['**/*.html'],
+            ignorekeys: ['next', 'contents', 'previous'],
+            bufferencoding: 'utf8'
+        }))
+
+        //.use(monitor())
 
         .build(function (err) {
             if (err) {
@@ -150,8 +265,6 @@ gulp.task("prodScripts", function () {
         .pipe(gulp.dest(path.join(__dirname, assetPath, "assets/scripts")));
 });
 
-
-
 // compile style sheet for development
 gulp.task("styles", function () {
     "use strict";
@@ -170,7 +283,6 @@ gulp.task("prodStyles", function () {
         .pipe(autoprefixer("last 2 version"))
         .pipe(gulp.dest(path.join(__dirname, assetPath, "assets/styles")));
 });
-
 
 gulp.task("buildDev", function (cb) {
     "use strict";

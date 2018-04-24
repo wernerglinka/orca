@@ -51,7 +51,10 @@ function plugin() {
                 field_contact_email_header,
                 field_contact_email,
                 field_contact_phone_header,
-                field_contact_phone
+                field_contact_phone,
+                field_twitter,
+                field_facebook,
+                field_linkedin
             &fields[node--testimonials]=body,
                 field_author,
                 field_title,
@@ -273,8 +276,7 @@ function plugin() {
         return categories.sort();
     };
 
-    return function (files, metalsmith, done) {
-        setImmediate(done);
+    return (files, metalsmith, done) => {
 
         const serverUrl = "http://dev-orca.pantheonsite.io";
         const page = "/jsonapi/node/home_page";
@@ -287,13 +289,11 @@ function plugin() {
             if (error) {
                 return console.dir(error);
             }
+
             // parse json into js object
             const homePageObj = JSON.parse(data);
             // add serverURL to the page object, we'll need it in some support functions
             homePageObj.serverURL = serverUrl;
-
-
-
 
             let homePage = {};
 
@@ -338,15 +338,27 @@ function plugin() {
             homePage.contactPhone = getFieldValue(homePageObj, "field_contact_phone") || ""; // Text (formatted)
             homePage.contactEmailHeader = getFieldValue(homePageObj, "field_contact_email_header") || ""; // Text (formatted)
             homePage.contactEmail = getFieldValue(homePageObj, "field_contact_email") || ""; // Text (formatted)
+            // get the social links
+            homePage.twitter = getFieldValue(homePageObj, "field_twitter") || ""; // Text (formatted)
+            homePage.facebook = getFieldValue(homePageObj, "field_facebook") || ""; // Text (formatted)
+            homePage.linkedin = getFieldValue(homePageObj, "field_linkedin") || ""; // Text (formatted)
 
-            // write the fields to the home-page data file
-            fs.writeFileSync(dataDirectory + "home-page.json", JSON.stringify(homePage), function (err) {
-                if (err) {
-                    console.log(err);
-                }
-                console.log('\n >>>> Homepage has been rebuild \n');
-                done();
-            });
+            // add all home page variables to the metalsmith metadata
+            let metadata = metalsmith.metadata();
+            metadata.homePage = homePage;
+            metalsmith.metadata(metadata);
+
+            const fileName = "index.html";
+            const page = {
+                layout: "default-page.html",
+                title: "ORCA | Home",
+                contents: new Buffer("This is still the home page")
+            }
+
+            // add page to metalsmith object
+            files[fileName] = page;
+
+            done();
         });
     };
 }

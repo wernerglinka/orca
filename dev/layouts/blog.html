@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" itemscope itemtype=”http://schema.org/Article”>
+    <head>
+        {% include "head.html" %}
+    </head>
+
+    <body id="onTop" class="{{ body_classes }} isLoading">
+        {% include "browser-upgrade.html" %}
+
+        <div class="top-stripe">
+            <div class="container cf">
+                <a class="site-logo" href="/">ORCA</a>
+                <a class="home-link" href="/"><i class="icon icon-home"></i></a>
+            </div>
+        </div>
+    
+        <div class="has-columns cf">
+            <section class="main">
+                {% if title %}
+                    <h1 class="page-title">{{ title }}</h1>
+                {% elseif tag %}
+                    <h1 class="page-title tag-name">Tag: {{ tag }}</h1>
+                {% elseif category %}
+                    <h1 class="page-title category-name">Blog Category: {{ category }}</h1>
+                {% endif %}
+
+                {% include "blog-categories-list.html" %}
+
+                <ul class="blog-list list-unstyled">
+                {% for blogpost in pagination.files %}            
+                    <li>
+                        <a href="/{{ blogpost.path | makePermalink }}">
+                            <div class="blog-list__item-header" style="background-image: url({{ blogpost.tn }})">
+                                <p>{{ blogpost.title }}</p>
+                            </div>
+                        </a>
+                        <div class="blog-info">
+                            <p>
+                                by {% for index, author in blogpost.blogAuthors %}{{ author.title }}{% if not loop.last %}, {% endif %}{% endfor %}
+                                <br>on {{ blogpost.date | dateFilter("MMMM D, YYYY") }}
+                            </p>
+                        </div>
+                    </li>       
+                {% endfor %}
+                </ul>
+
+                {% include "pager.html" %}
+
+            </section>
+            <aside class="sidebar">
+            </aside>
+        </div>
+
+    {% block footer %}
+        {% include "footer.html" %}
+    {% endblock %}
+
+    <a id="toTopButton" href="#onTop"><i class="icon icon-arrow-up"></i></a>
+    
+    {% block body_scripts %}
+        {% include "scripts.html" %}
+    {% endblock %}
+
+  </body>
+</html>

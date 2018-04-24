@@ -9,20 +9,5 @@
 
 <meta name="description" content="{{ description }}">
 
-{% if site.owner.google.verify %}
-  <meta name="google-site-verification" content="{{ site.owner.google.verify }}">
-{% endif %}
-
-{% if site.owner.bing-verify %}
-  <meta name="msvalidate.01" content="{{ site.owner.bing-verify }}">
-{% endif %}
-
-
-
 <link rel="shortcut icon" href="/favicon.ico">
-
-{% include "layouts/partials/social-metadata.html" %}
-
 <link rel="stylesheet" type="text/css" href="/assets/styles/main.css">
-
-{% if hasVideo %} {% include "layouts/partials/youtube.html" %} {% endif %}

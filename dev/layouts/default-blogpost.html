@@ -1,42 +1,70 @@
 <!doctype html>
 <html lang="en" itemscope itemtype=”http://schema.org/Article”>
   <head>
-    {% include "layouts/partials/head.html" %}
+    {% include "head.html" %}
   </head>
 
-  <body id="onTop" class="{{ body_classes }} isLoading">
-    {% include "layouts/partials/browser-upgrade.html" %}
+  <body id="onTop" class="{{ page_classes }} isLoading">
+    {% include "browser-upgrade.html" %}
 
-
-    <div class="container">
-        {% include "layouts/partials/header.html" %}
-
-        <a class="home-link" href="/"><i class="icon icon-home"></i></a>
-
-        <div class="content-wrapper has-columns cf">
-            <div class="main">
-                {% block blogpost_body %}
-                ... default blogpost content
-                {% endblock %}
-            </div>
-            <div class="sidebar">
-                {% block blogpost_sidebar %}
-                ... default blogpost sidebar
-                {% endblock %}
-            </div>
+    <div class="top-stripe">
+        <div class="container cf">
+            <a class="site-logo" href="/">ORCA</a>
+            <a class="home-link" href="/"><i class="icon icon-home"></i></a>
         </div>
-        
+    </div>
+    <div class="container">
+        {% include "header.html" %}
+
+        <div class="has-columns cf">
+            <div class="main">
+                <h1>{{ title }}</h1>
+                <p class="blog-date">
+                    {{ date | dateFilter("MMMM D, YYYY") }}
+                </p>
+                <ul class="categories-list">
+                    {% for category in categories %}
+                        <li>{{ category }}</li>
+                    {% endfor %}
+                </ul>
+                <div class='blogpost-content'>
+                    {{ contents }}
+                </div>
+            </div>
+
+            <aside class="sidebar">
+            {% for index, author in blogAuthors %}
+                <ul class="author-info">
+                    <li class="blog-author-avatar">
+                        <img src="{{author.avatarURL}}" alt="" />
+                    </li>
+                    <li class="blog-author">
+                        {{author.title}}
+                    </li>
+                    <li class="blog-author-position">
+                        {{author.position}}
+                    </li>
+                    <li class="blog-author-affiliation">
+                        {{author.affiliation}}
+                    </li>
+                </ul>
+            {% endfor %}
+
+                <h2>Tags</h2>
+                <ul class="tags-list">
+                {% for tag in tags %}
+                    <li>{{ tag }}</li>
+                {% endfor %}
+                </ul>
+            </aside>
+        </div>
     </div>
 
-    {% block footer %}
-        {% include "layouts/partials/footer.html" %}
-    {% endblock %}
+    {% include "footer.html" %}
 
     <a id="toTopButton" href="#onTop"><i class="icon icon-arrow-up"></i></a>
     
-    {% block body_scripts %}
-        {% include "layouts/partials/scripts.html" %}
-    {% endblock %}
+    {% include "scripts.html" %}
 
   </body>
 </html>

@@ -41,10 +41,10 @@ $blog-list-background-color: #f8f8f8;
     li {
         display: inline-block;
         width: 30%;
-        margin-left: 3%;
+        margin-right: 3%;
         vertical-align: top;
 
-        &:first-child {
+        &:last-child {
             margin: 0;
         } 
 

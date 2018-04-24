@@ -1,6 +1,7 @@
 plugin = () => {
     return (files, metalsmith, done) => {
       console.log(metalsmith.metadata());
+      //console.log(files);
       done();
     };
 };

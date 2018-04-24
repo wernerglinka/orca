@@ -14,6 +14,15 @@ const commonTags = require('common-tags');
 function plugin() {
     'use strict';
 
+
+    /**
+     * getBlogPostsQuery.
+     * get a JSON object with all blogposts from the server.
+     * @param {string} serverURL 
+     * @param {string} page 
+     *
+     * @return {obj}  the JSON object for all blogposts
+     */
     const getBlogPostsQuery = (serverURL, page) => {
         const query = commonTags.oneLineTrim`?_format=json
             &fields[node--blogpost]=title,
@@ -37,10 +46,18 @@ function plugin() {
         return serverURL + page + query;
     };
 
-    // images are included via a node relationship to the image file
-    // we first build an array of all available images in the response json
-    // later we can search all node relationships for the file name and when found
-    // we'll find the url of the image
+
+    /**
+     * buildImageList.
+     * images are included via a node relationship with the image file
+     * we first build an array of all available images in the response json
+     * later we can search all node relationships for the file name and when found
+     * we'll find the url of the image.
+     *
+     * @param {obj} obj     all blogposts obj
+     *
+     * @return {arrar} all available images
+     */
     const buildImageList = (obj) => {
         let availableImages = [];
         // build an array of all available images
@@ -52,6 +69,16 @@ function plugin() {
         return availableImages;
     };
 
+
+    /**
+     * getBlogTn.
+     * get the thumbnail url of this thumbnail id.
+     *
+     * @param {obj}    obj  all images obj
+     * @param {string} id   this image id
+     *
+     * @return {string} this image url
+     */
     const getBlogTn = (obj, id) => {
         for (let key in obj) {
             if (id === obj[key].id) {
@@ -60,6 +87,15 @@ function plugin() {
         }
     };
 
+
+    /**
+     * buildAuthorList.
+     * get list of all available authors.
+     *
+     * @param {obj} obj  all blogposts object
+     *
+     * @return {array} all available authors
+     */
     const buildAuthorList = (obj) => {
         let availableAuthors = [];
         // build an array of all available images
@@ -72,20 +108,132 @@ function plugin() {
         return availableAuthors;
     };
 
-    const getBlogAuthor = (obj, id) => {
+
+    /**
+     * getBlogAuthor.
+     * get the author(s) of a blogpost.
+     * blogAuthors looks like this:
+     *  [
+     *      {
+     *          "type": "node--blog_author",
+     *          "id": "4dacea24-11b1-4dc7-9d9a-79696d12c0da"
+     *      },
+     *      {
+     *          "type": "node--blog_author",
+     *          "id": "33e9cde6-40f1-41fb-8a7a-7a825abf9671"
+     *      }
+     *  ]
+     *
+     * allAuthors looks like this:
+     *  [
+     *      {
+     *          type: 'node--blog_author',
+     *          id: '4dacea24-11b1-4dc7-9d9a-79696d12c0da',
+     *          attributes:
+     *          { 
+     *              title: 'Cloe Turnshoe',
+     *              field_author_affiliation: [Object],
+     *              field_position: [Object] },
+     *              relationships: { field_avatar: [Object] },
+     *              links: ...
+     *          },
+     *          { 
+     *              type: 'node--blog_author',
+     *              id: '33e9cde6-40f1-41fb-8a7a-7a825abf9671',
+     *              attributes: ...
+     *           },
+     *           ...
+     *      }
+     *  ]
+     * @param {obj} allAuthors    the allAuthors obj
+     * @param {obj} blogAuthors   the blog author(s)
+     *
+     * @return {obj} author(s) of the blogpost
+     */
+    const getBlogAuthor = (allAuthors, blogAuthors) => {
         let temp = {};
-        for (let key in obj) {
-            if (id === obj[key].id) {
-                return {
-                    name: obj[key].attributes.title,
-                    position: obj[key].attributes.field_position.value,
-                    affiliation: obj[key].attributes.field_author_affiliation.value,
-                    avatarID: obj[key].relationships.field_avatar.data.id
+        for (let authorIndex in allAuthors) {
+            for (let blogAuthorIndex in blogAuthors ) {
+                if (blogAuthors[blogAuthorIndex].id === allAuthors[authorIndex].id) {
+                     temp[blogAuthors[blogAuthorIndex].id] = {
+                        name: allAuthors[authorIndex].attributes.title,
+                        position: allAuthors[authorIndex].attributes.field_position.value,
+                        affiliation: allAuthors[authorIndex].attributes.field_author_affiliation.value,
+                        avatarID: allAuthors[authorIndex].relationships.field_avatar.data.id
+                    }
                 }
             }
         }
+        return temp;
     };
 
+
+    /**
+     * getBlogAuthorProfile.
+     * get the complete blogpost author(s) profile including their avatar
+     *
+     * @param {obj}    allBlogpostsObj
+     * @param {string} blogpostID
+     *
+     * @return {obj} author(s) profile
+     */
+    const getBlogAuthorProfile = (allBlogpostsObj, blogpostID) => {
+
+        // get the author ID(s) for this blogpost
+        // authors are represented in blogposts as relationships
+        // in the blogpost only an author ID is available in the relationship obj
+        let foundAuthorIDs = [];
+
+        for (let blogpostIndex in allBlogpostsObj.data) {         
+            if (allBlogpostsObj.data[blogpostIndex].id === blogpostID) {
+                let authorsRelationshipData = allBlogpostsObj.data[blogpostIndex].relationships.field_blog_author.data;
+                for (let authorIndex in authorsRelationshipData) {
+                    foundAuthorIDs[authorIndex] = authorsRelationshipData[authorIndex].id
+                }
+            }
+        }
+        // at this point we have the author IDs in array foundAuthorIDs
+
+        // get basic authors data
+        let foundAuthors = {};
+        // for every member of the included object we'll loop over the foundAuthorsIDs array to find a match
+        for (let authorIndex in allBlogpostsObj.included) {
+            for (let foundAuthorIndex in foundAuthorIDs) {
+                if (allBlogpostsObj.included[authorIndex].id === foundAuthorIDs[foundAuthorIndex]) {
+                    foundAuthors[allBlogpostsObj.included[authorIndex].id] = {
+                        title : allBlogpostsObj.included[authorIndex].attributes.title,
+                        affiliation : allBlogpostsObj.included[authorIndex].attributes.field_author_affiliation.value,
+                        position : allBlogpostsObj.included[authorIndex].attributes.field_position.value,
+                        avatarID : allBlogpostsObj.included[authorIndex].relationships.field_avatar.data.id,
+                        avatarURL : ''
+                    }
+                }
+            }
+        }
+        // at this point we have the authors object with the avatarID
+
+        // now we need to exchange the avatarURL for the avatarsIDs
+        for (let avatarIndex in allBlogpostsObj.included) {
+            for (let foundAuthorsIndex in foundAuthors) {
+                if (allBlogpostsObj.included[avatarIndex].id === foundAuthors[foundAuthorsIndex].avatarID) {
+                    foundAuthors[foundAuthorsIndex].avatarURL = allBlogpostsObj.serverURL + allBlogpostsObj.included[avatarIndex].attributes.uri.url;
+                    delete foundAuthors[foundAuthorsIndex].avatarID
+                }
+            }
+        }
+        return foundAuthors;
+    };
+
+
+    /**
+     * getCategories.
+     * get a list of all categories for blogposts.
+     *
+     * @param {obj}    obj        all blogpost objects
+     * @param {string} taxonomy   the name of the taxonomy field, e.g. 'field_blog_tags' or 'field_blog_category' 
+     *
+     * @return {array} categories for all blogposts
+     */
     const getCategories = (obj, taxonomy) => {
         let categories = [];
         let temp = {};
@@ -100,6 +248,17 @@ function plugin() {
         return categories.sort();
     };
 
+
+    /**
+     * getBlogCategories.
+     * get the categories of this blogpost
+     *
+     * @param {obj}     objAll      all blogpost objects
+     * @param {obj}     obj         this blogpost object
+     * @param {string}  taxonomy   the name of the taxonomy field, e.g. 'field_blog_tags' or 'field_blog_category'
+     *
+     * @return {array}  categories for this blogpost
+     */
     const getBlogCategories = (objAll, obj, taxonomy) => {
         let categories = [];
         let allCategories = getCategories(objAll, obj.relationships[taxonomy].data[0].type);
@@ -129,8 +288,7 @@ function plugin() {
     };
 
 
-    return function (files, metalsmith, done) {
-        setImmediate(done);
+    return (files, metalsmith, done) => {
 
         const serverUrl = "http://dev-orca.pantheonsite.io";
         const page = "/jsonapi/node/blogpost";
@@ -147,12 +305,11 @@ function plugin() {
             }
             // parse json into js object
             const blogPostsObj = JSON.parse(data);
-            // add serverURL to the page object, we'll need it in some support functions
+            // add serverURL to the page object to be used in support functions
             blogPostsObj.serverURL = serverUrl;
 
             const allImages = buildImageList(blogPostsObj);
             const allAuthors = buildAuthorList(blogPostsObj);
-            //const allAuthorAvatars = buildAuthorAvatarList(blogPostsObj);
             let blogpostSummary = {};
             let temp = {};
 
@@ -164,84 +321,43 @@ function plugin() {
                 temp.blogDate = blogpost.attributes.field_blog_date;
                 temp.blogURL = blogpost.attributes.title.replace(/\.$/, "").replace(/\s+/g, '-').toLowerCase();
                 temp.blogTn = blogPostsObj.serverURL + getBlogTn(allImages, blogpost.relationships.field_blog_thumbnail.data.id);
-                temp.blogAuthor = getBlogAuthor(allAuthors, blogpost.relationships.field_blog_author.data.id);
-                temp.blogAuthor.avatarURL = blogPostsObj.serverURL + getBlogTn(allImages, temp.blogAuthor.avatarID);
+                //temp.blogAuthor = getBlogAuthor(allAuthors, blogpost.relationships.field_blog_author.data);
+                //temp.blogAuthor.avatarURL = blogPostsObj.serverURL + getBlogTn(allImages, temp.blogAuthor.avatarID);
                 temp.blogCategories = getBlogCategories(blogPostsObj, blogpost, "field_blog_category");
                 temp.blogTags = getBlogCategories(blogPostsObj, blogpost, "field_blog_tags");
-
-                let blogTags = temp.blogTags.join(",");
-                let blogCategories = temp.blogCategories.join(",");
+                temp.blogAuthors = getBlogAuthorProfile(blogPostsObj, blogpost.id);
 
                 // replace any trailing dot, convert spaces to dashes and lower case.
-                const fileName = blogpost.attributes.title.replace(/\.$/, "").replace(/\s+/g, '-').toLowerCase() + ".njk";
-                const fileContent = commonTags.html`
-                    ---
-                    layout: blog-page.html
-                    title: ${blogpost.attributes.title}
-                    description: ${blogpost.attributes.body.summary}
-                    page_class: blogpost
-                    blogpost_date: ${blogpost.attributes.field_blog_date}
-                    blogpost_tags: [${blogTags}]
-                    blogpost_categories: [${blogCategories}]
-                    ---
+                // key for the files array
+                const fileName = "blog/" + blogpost.attributes.title.replace(/\.$/, "").replace(/\s+/g, '-').toLowerCase() + ".html";
+                // value for the files array
+                const page = {
+                    layout: "default-blogpost.html",
+                    title: blogpost.attributes.title,
+                    collection: "blog",
+                    description: blogpost.attributes.body.summary,
+                    page_classes: "blogpost",
+                    contents: new Buffer(blogpost.attributes.body.value),
+                    tn: temp.blogTn,
+                    date: temp.blogDate,
+                    tags: temp.blogTags,
+                    categories: temp.blogCategories,
+                    blogAuthors : temp.blogAuthors
+                }
 
-                    {% extends "layouts/default-blogpost.html" %}
-
-                    {% block blogpost_body %}
-                    <h1>${blogpost.attributes.title}</h1>
-                    <p class="blog-date">
-                        {{ blogpost_date | dateFilter("MMMM D, YYYY") }}
-                    </p>
-                    <div class='blogpost-content'>
-                        ${blogpost.attributes.body.value}
-                    </div>
-                    {% endblock %}
-
-                    {% block blogpost_sidebar %}
-                    <ul class="author-info">
-                        <li class="blog-author-avatar">
-                            <img src="${temp.blogAuthor.avatarURL}" alt="" />
-                        </li>
-                        <li class="blog-author">
-                            ${temp.blogAuthor.name}
-                        </li>
-                        <li class="blog-author-position">
-                            ${temp.blogAuthor.position}
-                        </li>
-                        <li class="blog-author-affiliation">
-                            ${temp.blogAuthor.affiliation}
-                        </li>
-                    </ul>
-
-                    <ul class="tags-list">
-                        <h2>Tags</h2>
-                        {% for tag in blogpost_tags %}
-                            <li>{{ tag }}</li>
-                        {% endfor %}
-                    </ul>
-
-                    {% endblock %}
-                    `;
-
-                // write the blogpost file
-                fs.writeFileSync(blogDirectory + fileName, fileContent, function (err) {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
+                // add page to metalsmith object
+                files[fileName] = page;
 
                 // add blogpost metadata to blogpostSummary
                 blogpostSummary[blogpost.id] = temp;
             });
 
-            // build the blogpost summary meta data file: /dev/content/data/blogpost.json
-            fs.writeFileSync(dataDirectory + "blogposts.json", JSON.stringify(blogpostSummary), function (err) {
-                if (err) {
-                    console.log(err);
-                }
-                done();
-            });
+            // add blogpostSummary variables to the metalsmith metadata
+            let metadata = metalsmith.metadata();
+            metadata.blogpostSummary = blogpostSummary;
+            metalsmith.metadata(metadata);
 
+            done();
         });
     };
 }

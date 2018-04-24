@@ -3,11 +3,21 @@
     .main {
         width: 65%;
         float: left;
-        padding-right: 30px;
+        padding: 0 30px;
     }
     .sidebar {
         width: 35%;
         margin-left: 65%;
-        padding-left: 30px;
+        padding: 0 30px;
+    }
+
+    @media (max-width: 767px) {
+        .main,
+        .sidebar {
+            width: 100%;
+            float: none;
+            margin: 0;
+            padding: 0 30px 30px;
+        }
     }
 }

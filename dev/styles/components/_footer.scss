@@ -1,0 +1,39 @@
+$footer-background-color: #333;
+$footer-text-color: #fff;
+
+footer {
+    width: 100%;
+    padding: 50px;
+    background-color: $footer-background-color;
+    color: $footer-text-color;
+
+    p {
+        display: inline-block;
+    }
+
+    .social-links {
+        float: right;
+
+        li {
+            padding: 20px;
+        }
+    }
+
+    a {
+        color: inherit;
+    }
+
+    @media (max-width: 580px) {
+        padding: 30px;
+
+        p {
+            display: block;
+            text-align: center;
+        }
+
+        .social-links {
+            float: none;
+            text-align: center;
+        }
+    }
+}

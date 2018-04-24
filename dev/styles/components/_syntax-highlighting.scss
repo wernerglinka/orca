@@ -9,6 +9,7 @@ pre.line-numbers {
     counter-increment: line-numbers;
     content: counter(line-numbers);
     color: #ccc;
+    padding-right: 20px;
   }
 }
 
