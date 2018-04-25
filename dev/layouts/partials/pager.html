@@ -1,19 +1,19 @@
 <div class="blog-pagination">
   {% if pagination.previous or pagination.next %}
     {% if pagination.previous %}
-      <a href="/{{pagination.previous.path}}/">Previous</a>
+      <a href="/{{pagination.previous.path }}">Previous</a>
     {% endif %}
 
     {% for pageNumber in pagination.pages %}
       {% if pagination.num === loop.index %}
         <span class="activePage">{{ loop.index }}</span>
       {% else %}
-        <a href="/{{ pageNumber.path }}/">{{ loop.index }}</a>
+        <a href="/{{ pageNumber.path }}">{{ loop.index }}</a>
       {% endif %}
     {% endfor %}
 
     {% if pagination.next %}
-      <a href="/{{pagination.next.path}}/">Next</a>
+      <a href="/{{ pagination.next.path }}">Next</a>
     {% endif %}
   {% endif %}
 </div>

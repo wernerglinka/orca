@@ -133,13 +133,13 @@ function setupMetalsmith(callback) {
             "handle": "categories",
             "path": "blog/categories/:category.html",
             "pathPage": "blog/categories/:category/:num/index.html",
-            "perPage": 5,
+            "perPage": 2,
             "layout": "blog.html",
             "sortBy": "date",
             "reverse": true,
             "skipMetadata": false,
             "addMetadata": {
-                "body_classes": "blog has-sidebar abc123",
+                "body_classes": "blog",
                 "is_category_page": true
             },
             "slug": {
@@ -151,13 +151,13 @@ function setupMetalsmith(callback) {
             "handle": "tags",
             "path": "blog/topics/:tag.html",
             "pathPage": "blog/topics/:tag/:num/index.html",
-            "perPage": 5,
+            "perPage": 2,
             "layout": "blog.html",
             "sortBy": "date",
             "reverse": true,
             "skipMetadata": false,
             "addMetadata": {
-                "body_classes": "blog has-sidebar",
+                "body_classes": "blog",
                 "is_tag_page": true
             },
             "slug": {
@@ -192,12 +192,6 @@ function setupMetalsmith(callback) {
             "partials": "./dev/layouts/partials"
         }))
 
-        .use(layouts({
-            "engine": "nunjucks",
-            "directory": "./dev/layouts",
-            "partials": "./dev/layouts/partials"
-        }))
-
         .use(assets({
             "source": assetPath
         }))
@@ -208,6 +202,14 @@ function setupMetalsmith(callback) {
 
         .use(permalinks({
             "pattern": ":collections/:title"
+        }))
+
+        // layout must be located behind permalinks for the categories and 
+        // tags pager links to be formed properly
+        .use(layouts({
+            "engine": "nunjucks",
+            "directory": "./dev/layouts",
+            "partials": "./dev/layouts/partials"
         }))
 
         .use(writemetadata({
