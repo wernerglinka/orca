@@ -10,7 +10,8 @@
         <div class="top-stripe">
             <div class="container cf">
                 <a class="site-logo" href="/">ORCA</a>
-                <a class="home-link" href="/"><i class="icon icon-home"></i></a>
+                <a class="home-link" href="/"><i class="icon icon-home" title="Go to home page"></i></a>
+                {% if not is_blog %}<a class="blog-link" href="/blog/1/" title="Go to blog landing page"><i class="icon icon-edit"></i></a>{% endif %}
             </div>
         </div>
     
@@ -24,17 +25,14 @@
                     <h1 class="page-title category-name">Blog Category: {{ category }}</h1>
                 {% endif %}
 
-                {% include "categories-list.html" %}
-
-                <ul class="blog-list list-unstyled">
+                <ul class="blog-list-vertical list-unstyled">
                 {% for blogpost in pagination.files %}            
-                    <li>
+                    <li class="cf">
                         <a href="/{{ blogpost.path | makePermalink }}">
-                            <div class="blog-list__item-header" style="background-image: url({{ blogpost.tn }})">
-                                <p>{{ blogpost.title }}</p>
-                            </div>
+                            <div class="blog-list-vertical__img" style="background-image: url({{ blogpost.tn }})"></div>
                         </a>
                         <div class="blog-info">
+                            <a href="/{{ blogpost.path | makePermalink }}"><h2>{{ blogpost.title }}</h2></a>
                             <p>
                                 by {% for index, author in blogpost.blogAuthors %}{{ author.title }}{% if not loop.last %}, {% endif %}{% endfor %}
                                 <br>on {{ blogpost.date | dateFilter("MMMM D, YYYY") }}
@@ -48,6 +46,23 @@
 
             </section>
             <aside class="sidebar">
+                <h3>Blog Categories:</h3>
+                {% include "categories-list.html" %}
+
+                <h3>Tags</h3>
+                {% include "tags-list.html" %}
+
+                <h3>Featured Posts</h3>
+                <ul class="blog-list-overview">
+                    {% for featuredBlogPost in featuredBlogPosts %}
+                    <li>
+                        <ul class="list-unstyled">
+                        <li class="blog-post-title"><a href="/{{ featuredBlogPost.path }}/">{{ featuredBlogPost.title }}</a></li>
+                        <li><a class="read-more-link" href="/{{ featuredBlogPost.path }}/">Read it <span>&raquo;</span></a></li>
+                        </ul>
+                    </li>
+                    {% endfor %}
+                </ul>
             </aside>
         </div>
 

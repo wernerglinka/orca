@@ -25,9 +25,11 @@ $blog-header-height: 50px;
         line-height: $blog-header-height;
         font-weight: bold;
 
-        &.home-link {
+        &.home-link,
+        &.blog-link {
             float: right;
             font-size: 24px;
+            margin-left: 30px;
         }
 
         &.site-logo {

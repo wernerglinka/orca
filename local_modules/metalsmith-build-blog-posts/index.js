@@ -332,6 +332,7 @@ function plugin() {
                 const fileName = "blog/" + blogpost.attributes.title.replace(/\.$/, "").replace(/\s+/g, '-').toLowerCase() + ".html";
                 // value for the files array
                 const page = {
+                    type: "blogpost",
                     layout: "default-blogpost.html",
                     title: blogpost.attributes.title,
                     collection: "blog",

@@ -3,9 +3,9 @@
 @font-face {
   font-family: 'orca';
   src:
-    url('#{$icomoon-font-path}/orca.ttf?w1m8e2') format('truetype'),
-    url('#{$icomoon-font-path}/orca.woff?w1m8e2') format('woff'),
-    url('#{$icomoon-font-path}/orca.svg?w1m8e2#orca') format('svg');
+    url('#{$icomoon-font-path}/orca.ttf?46ebl5') format('truetype'),
+    url('#{$icomoon-font-path}/orca.woff?46ebl5') format('woff'),
+    url('#{$icomoon-font-path}/orca.svg?46ebl5#orca') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -29,6 +29,11 @@ i {
   @return unquote("\"") + $str + unquote("\"");
 }
 
+.icon-edit {
+  &:before {
+    content: unicode($icon-edit); 
+  }
+}
 .icon-facebook {
   &:before {
     content: unicode($icon-facebook); 

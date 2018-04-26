@@ -1,25 +1,61 @@
 .tags-list {
     list-style: none;
+    margin-bottom: 50px;
 
     li {
         display: inline-block;
-        padding: 5px 15px;
         border: $default-border;
-        font-size: 14px;
-        margin-right: 10px;
+        margin: 0 10px 10px 0;
+
+        a {
+            display: block;
+            padding: 5px 15px;
+            font-size: 14px;
+            text-decoration: none;
+            color: inherit;
+
+            &:hover {
+                background-color: #f8f8f8;
+            }
+        }
+
+        &.active {
+            background-color: #f8f8f8;
+            
+            a:hover {
+                cursor: default;
+            }
+        }  
     }
 }
 
 .categories-list {
     list-style: none;
+    margin-bottom: 50px;
 
     li {
-        display: inline-block;
-        padding: 5px 15px;
+        padding: 5px 0;
         font-size: 14px;
         font-style: italic;
-        background-color: #f0f0f0;
         margin-right: 10px;
-        
+
+        a {
+            text-decoration: none;
+
+            &:hover {
+                font-weight: 400;
+            }
+        }
+
+        &.active {
+             a {
+                font-weight: 600;
+
+                &:hover {
+                    cursor: default;
+                }
+             }
+            
+        }   
     }
 }

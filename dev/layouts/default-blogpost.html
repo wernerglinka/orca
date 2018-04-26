@@ -11,6 +11,7 @@
         <div class="container cf">
             <a class="site-logo" href="/">ORCA</a>
             <a class="home-link" href="/"><i class="icon icon-home"></i></a>
+            <a class="blog-link" href="/blog/1/" title="Go to blog landing page"><i class="icon icon-edit"></i></a>
         </div>
     </div>
     <div class="container">
@@ -54,7 +55,9 @@
                 <h2>Tags</h2>
                 <ul class="tags-list">
                 {% for tag in tags %}
-                    <li>{{ tag.name }}</li>
+                    <li>
+                        <a class="tag-link" href="/blog/topics/{{ tag.slug }}">{{ tag.name }}</a>
+                    </li>
                 {% endfor %}
                 </ul>
             </aside>

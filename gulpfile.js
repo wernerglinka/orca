@@ -34,6 +34,7 @@ const renamer = require('metalsmith-renamer');
 const msIgnore = require('metalsmith-ignore');
 const msIf = require('metalsmith-if');
 const highlightCode = require('metalsmith-prism');
+const postsList = require("./local_modules/metalsmith-blog-helper");
 
 const buildHomePage = require('./local_modules/metalsmith-build-home-page');
 const buildBlogPosts = require('./local_modules/metalsmith-build-blog-posts');
@@ -139,7 +140,7 @@ function setupMetalsmith(callback) {
             "reverse": true,
             "skipMetadata": false,
             "addMetadata": {
-                "body_classes": "blog",
+                "body_classes": "blog blog-landing-page",
                 "is_category_page": true
             },
             "slug": {
@@ -157,7 +158,7 @@ function setupMetalsmith(callback) {
             "reverse": true,
             "skipMetadata": false,
             "addMetadata": {
-                "body_classes": "blog",
+                "body_classes": "blog blog-landing-page",
                 "is_tag_page": true
             },
             "slug": {
@@ -180,9 +181,15 @@ function setupMetalsmith(callback) {
                 "path": "blog/:num/index.html",
                 "pageMetadata": {
                     "title": "The Blog",
-                    "body_classes": "blogpost"
+                    "body_classes": "blog-landing-page",
+                    "is_blog": true
                 }
             }
+        }))
+
+        .use(postsList({
+            "latest_quantity": 3, // length of the recent posts list
+            "featured_quantity": 3 // length of the featured posts list
         }))
 
         // apply templates

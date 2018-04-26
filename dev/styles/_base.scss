@@ -3,6 +3,7 @@
 
 html {
     box-sizing: border-box;
+    background-color: #333;
 }
 *, *:before, *:after {
     box-sizing: inherit;
@@ -13,10 +14,15 @@ body {
     line-height: 1.5;
     color: $default-text-color;
     margin: 0;
+    background-color: #fff;
 }
 h1, h2, h3, h4 {
     font-family: arial, san-serif;
     font-weight: bold;
+}
+a {
+    color: $orca-violet;
+    text-decoration: none;
 }
 .container {
     max-width: 1280px;
@@ -47,4 +53,8 @@ strong {
 ul, li {
     margin: 0;
     padding: 0;
+}
+
+.list-unstyled {
+    list-style: none;
 }

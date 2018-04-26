@@ -33,19 +33,19 @@ function plugin(opts) {
             var thisFile = files[file];
 
             // we only look at blog posts
-            if ((file.indexOf('blog/') !== -1) && (file.indexOf('.md') !== -1)) {
-
+            if (thisFile.type === "blogpost") {
                 // assemble a sorted all blogs list
                 // this list may be used when the whole list of blog posts is needed to
                 // create a context influenced list like showing all other posts by
                 // a particular author when we show a blog post.
                 temp = {
-                    "title":  thisFile.title,
-                    "date":   thisFile.date,
-                    "author": thisFile.author,
-                    "path":   thisFile.path.replace('.md', ''),
-                    "image":  thisFile.image.feature
-                }
+                    "title":   thisFile.title,
+                    "date":    new Date(thisFile.date),
+                    "authors": thisFile.blogAuthors,
+                    "path":    thisFile.path.replace('.html', ''),
+                    "image":   thisFile.tn
+                };
+
                 allSortedBlogPosts.push(temp);
                 allSortedBlogPosts.sort(function(a,b) {
                     return a.date.getTime() - b.date.getTime();
@@ -60,11 +60,11 @@ function plugin(opts) {
                 if ( thisFile.featured_blog_post ) {
                     temp = {
                         "title" :  thisFile.title,
-                        "date" :   thisFile.date,
-                        "author" : thisFile.author,
-                        "path" :   thisFile.path.replace('.md', ''),
+                        "date" :   new Date(thisFile.date),
+                        "authors": thisFile.blogAuthors,
+                        "path":    thisFile.path.replace('.html', ''),
                         "order" :  thisFile.featured_blog_post_order
-                    }
+                    };
                 }
                 featuredBlogPosts.push(temp);
                 featuredBlogPosts.sort(function(a,b) {

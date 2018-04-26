@@ -1,13 +1,11 @@
-{% if (categories and title) or (categories and category) %}
-  <ul class="categories-list">
-    {% for categoryName, categoryData in categoryCloud %}
-    {% if categoryName === category %}
-    <li class="active">
-    {% else %}
-    <li>
-    {% endif %}
-      <a class="tag-link" href="{{ categoryData.path}}/">{{ categoryName }}</a>
-    </li>
-    {% endfor %}
-  </ul>
-{% endif %}
+<ul class="categories-list">
+  {% for categoryName, categoryData in categoryCloud %}
+  {% if categoryName === category %}
+  <li class="active">
+  {% else %}
+  <li>
+  {% endif %}
+    <a class="tag-link" href="{{ categoryData.path}}/">{{ categoryName }}</a>
+  </li>
+  {% endfor %}
+</ul>

@@ -1,0 +1,11 @@
+<ul class="tags-list">
+    {% for tagName, tagData in tagCloud %}
+    {% if tag === tagName %}
+    <li class="active">
+    {% else %}
+    <li>
+    {% endif %}
+      <a class="tag-link" href="/blog/{{ tagData.path }}/">{{ tagName }}({{ tagData.occurences }})</a>
+    </li>
+    {% endfor %}
+</ul>

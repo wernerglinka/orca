@@ -1,0 +1,21 @@
+.blog-pagination {
+    padding: 10px 0 20px;
+
+    text-align: center;
+
+    * {
+        padding: 10px 20px;
+    }
+
+    span {
+        font-weight: 800;
+    }
+
+    a {
+        text-decoration: none;
+
+        &:hover {
+            border-bottom: $default-border;
+        }
+    }
+}
