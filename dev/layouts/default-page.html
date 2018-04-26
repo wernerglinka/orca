@@ -7,9 +7,13 @@
   <body id="onTop" class="{{ body_classes }} isLoading">
     {% include "browser-upgrade.html" %}
 
+    <div class="header">
+        <div class="container">
+            {% include "header.html" %}
+        </div>
+    </div>
 
     <div class="container">
-        {% include "header.html" %}
 
         {% block welcome_section %}
         <section class="welcome-section">
@@ -21,7 +25,7 @@
         {% endblock %}
 
         {% block about_section %}
-        <section class="about-section">
+        <section id="about" class="about-section">
             <div class="section-row cf">
                 <div class="about-header section-row__left" style="background-image: url({{ homePage.aboutImageSource }})">
                     <h1>{{ homePage.aboutTitle }}</h1>
@@ -72,7 +76,7 @@
         {% endblock %}
 
         {% block services_section %}
-        <section class="about-section">
+        <section id="services" class="about-section">
             <div class="section-row cf">
                 <div class="services-header section-row__left" style="background-image: url({{ homePage.servicesImageSource }})">
                     <h1>{{ homePage.servicesTitle }}</h1>
@@ -97,7 +101,7 @@
         {% endblock %}
 
         {% block projects_section %}
-        <section class="projects-section">
+        <section id="projects" class="projects-section">
             <div class="section-row cf">
                 <div class="projects-header section-row__left" >
                     <h1>{{ homePage.projectsTitle }}</h1>
@@ -135,7 +139,7 @@
         {% endblock %}
 
         {% block blog_section %}
-        <section class="blog-section">
+        <section id="blogs" class="blog-section">
             <div class="section-row cf">
                 <div class="blog-header section-row__left" style="background-image: url({{ homePage.blogImageSource }})">
                     <h1>{{ homePage.blogTitle }}</h1>
@@ -172,7 +176,7 @@
         {% endblock %}
 
         {% block contact_section %}
-        <section class="contact-section">
+        <section id="contact" class="contact-section">
             <div class="section-row cf">
                 <div class="contact-header section-row__left" style="background-image: url({{ homePage.contactImageSource }})">
                     <h1>{{ homePage.contactTitle }}</h1>

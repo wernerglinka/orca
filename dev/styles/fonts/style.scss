@@ -3,9 +3,9 @@
 @font-face {
   font-family: 'orca';
   src:
-    url('#{$icomoon-font-path}/orca.ttf?46ebl5') format('truetype'),
-    url('#{$icomoon-font-path}/orca.woff?46ebl5') format('woff'),
-    url('#{$icomoon-font-path}/orca.svg?46ebl5#orca') format('svg');
+    url('#{$icomoon-font-path}/orca.ttf?yz36me') format('truetype'),
+    url('#{$icomoon-font-path}/orca.woff?yz36me') format('woff'),
+    url('#{$icomoon-font-path}/orca.svg?yz36me#orca') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -29,6 +29,11 @@ i {
   @return unquote("\"") + $str + unquote("\"");
 }
 
+.icon-arrow-up {
+  &:before {
+    content: unicode($icon-arrow-up); 
+  }
+}
 .icon-edit {
   &:before {
     content: unicode($icon-edit); 

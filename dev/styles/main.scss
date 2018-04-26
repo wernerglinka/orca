@@ -3,6 +3,7 @@
 @import "base";
 @import "fonts/style";
 
+@import "components/navigation";
 @import "components/homepage-section";
 @import "components/welcome-section";
 @import "components/about-section";
@@ -18,6 +19,8 @@
 @import "components/tags-category-lists";
 @import "components/blog-lists";
 @import "components/pager";
+@import "components/to-top";
+
 
 @import "blogpost";
 @import "blog-landing-page";

@@ -54,7 +54,6 @@
             const codeContainers = document.getElementsByClassName('line-numbers');
             let codeArray, i;
 
-            console.log(codeContainers);
             for (let i = 0; codeContainers.length > i; i++) {
                 let thisCodeContainer = codeContainers[i];
                 //insert a new line after open <code> tag
@@ -76,10 +75,126 @@
         }
     }());
 
-        //the document ready function
-        document.addEventListener("DOMContentLoaded", function (event) { 
-            initialScreenState.init();
-            lineNumbers.init();
-        });
-        // end ready function
-    }());
+    // function to scroll softly to on-page anchors
+    const softScroll = (function ($) {
+        'use strict';
+
+        // filter handling for a /dir/ OR /indexordefault.page
+        var filterPath = function (string) {
+            return string
+                .replace(/^\//, '')
+                .replace(/(index|default).[a-zA-Z]{3,4}$/, '')
+                .replace(/\/$/, '');
+        };
+
+        var init = function () {
+            // source: https://css-tricks.com/smooth-scrolling-accessibility/
+            // URL updates and the element focus is maintained
+            // originally found via in Update 3 on http://www.learningjquery.com/2007/10/improved-animated-scrolling-script-for-same-page-links
+            //
+            // the code from css-tricks has an obscure bug that causes urls of the form https://caniuse.com/#search=requestAnimationFrame
+            // to cause an jQuery error: Uncaught Error: Syntax error, unrecognized expression: #search=requestAnimationFrame
+            // the error is caused by this selector $('a[href*="#"]') as this selector selects urls that have an "#" in any place
+            // Changing that to $('a[href^="#"]') insures that only hashes that START with and "#" are selected.
+
+            const locationPath = filterPath(location.pathname);
+            $('a[href^="#"]').each(function () {
+                const thisPath = filterPath(this.pathname) || locationPath;
+                const hash = this.hash;
+                if ($("#" + hash.replace(/#/, '')).length) {
+                    if (locationPath === thisPath && (location.hostname === this.hostname || !this.hostname) && this.hash.replace(/#/, '')) {
+                        const $target = $(hash), target = this.hash;
+                        if (target) {
+                            $(this).on('click', function (event) {
+                                event.preventDefault();
+                                $('html, body').animate({
+                                    scrollTop: $target.offset().top
+                                }, 1000);
+                            });
+                        }
+                    }
+                }
+            });
+        };
+
+        return {
+            init: init
+        };
+    }(jQuery));
+
+    // function to attach a class to the body element when the hamburger is touched/clicked
+    const hamburger = (function ($) {
+        'use strict';
+
+        let init = function () {
+            const thisPage = $('body');
+            const hamburger = $('.hamburger');
+            const thisMenuLayer = $('.navigation').find('ul');
+
+            hamburger.on('click', function () {
+                if (thisPage.hasClass('navActive')) {
+                    thisPage.removeClass('navActive');
+                    thisMenuLayer.fadeOut();
+                } else {
+                    thisMenuLayer.fadeIn();
+                    thisPage.addClass('navActive');
+                }
+            });
+
+            // hide nav menu after selection and when scrolling
+            thisMenuLayer.find('>li').on('click', function () {
+                thisPage.removeClass('navActive');
+                thisMenuLayer.fadeOut();
+            });
+            $(window).on('scroll', function () {
+                thisPage.removeClass('navActive');
+                thisMenuLayer.fadeOut();
+            });
+        };
+
+        return {
+            init: init
+        };
+    }(jQuery));
+
+    // function to manage toTop icon visibility
+    const toTopIcon = (function ($) {
+        'use strict';
+
+        let init = function () {
+            const toTop = $('#toTopButton');
+
+            if ($(document).scrollTop() >= 500) {
+                toTop.fadeIn();
+            } else {
+                toTop.fadeOut();
+            }
+
+            $(window).on('scroll', function () {
+                if ($(document).scrollTop() >= 500) {
+                    if (toTop.is(':hidden')) {
+                        toTop.fadeIn();
+                    }
+                } else {
+                    if (!toTop.is(':hidden')) {
+                        toTop.fadeOut();
+                    }
+                }
+            });
+        };
+
+        return {
+            init: init
+        };
+    }(jQuery));
+
+    //the document ready function
+    document.addEventListener("DOMContentLoaded", function (event) {
+        initialScreenState.init();
+        lineNumbers.init();
+        hamburger.init();
+        softScroll.init();
+        toTopIcon.init();
+    });
+    // end ready function
+}());

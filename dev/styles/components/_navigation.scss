@@ -1,0 +1,103 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+    .container {
+        position: relative;
+    }
+}
+
+.navigation {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 320px;
+
+    ul {
+        list-style: none;
+        padding: 70px 30px 30px;
+        background-color: rgba(255, 255, 255, 0.9);
+        box-shadow: $default-box-shadow;
+        display: none;
+
+        li {
+            text-align: right;
+            padding: 10px 0;
+        }
+    }
+}
+
+.hamburger {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 65px;
+    height: 65px;
+    background-color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    display: block;
+    border: none;
+
+
+    &:focus {
+        outline: 0;
+    }
+
+    span,
+    span:before,
+    span:after {
+        cursor: pointer;
+        height: 5px;
+        width: 35px;
+        background: $orca-violet;
+        position: absolute;
+        top: 30px;
+        left: 15px;
+        display: block;
+        content: '';
+        transition: all 500ms ease-in-out;
+    }
+    span:before {
+        top: -10px;
+        left: 0;
+    }
+    span:after {
+        top: auto;
+        bottom: -10px;
+        left: 0;
+    }
+    &:hover {
+        span,
+        span:before,
+        span:after {
+            background: $orca-red;
+        }
+    }
+}
+
+.navActive .hamburger {
+    background: none;
+
+    span {
+        background-color: transparent;
+    }
+    span:before,
+    span:after {
+        top: 0;
+    }
+    span:before {
+        transform: rotate(45deg);
+    }
+    span:after {
+        transform: rotate(-45deg);
+    }
+    &:hover {
+        span:before,
+        span:after {
+            background: $orca-red;
+        }
+    }
+}
