@@ -5,238 +5,245 @@
   </head>
 
   <body id="onTop" class="{{ body_classes }} isLoading">
-    {% include "browser-upgrade.html" %}
-
-    <div class="header">
-        <div class="container">
-            {% include "header.html" %}
-        </div>
-    </div>
-
-    <div class="container">
-
-        {% block welcome_section %}
-        <section class="welcome-section">
-            <div class="welcome-section__header" style="background-image: url({{ homePage.bgImageSource }})">
-                <h1>{{ homePage.siteName }}</h1>
-            </div>
-            <p class="welcome-section__text">{{ homePage.welcomeText | safe }}</p>
-        </section>
-        {% endblock %}
-
-        {% block about_section %}
-        <section id="about" class="about-section">
-            <div class="section-row cf">
-                <div class="about-header section-row__left" style="background-image: url({{ homePage.aboutImageSource }})">
-                    <h1>{{ homePage.aboutTitle }}</h1>
-                </div>
-                <div class="about-byline section-row__right">
-                    <p class="about-section__text">{{ homePage.aboutByline }}</p>
-                </div>
-            </div>
-            <div class="section-row cf">
-                <div class="about-prose section-row__left">
-                    <ul class="about-prose__prose-selector">
-                        <li class="active">{{ homePage.aboutProse1Header}}</li>
-                        <li>{{ homePage.aboutProse2Header}}</li>
-                    </ul>
-                    <div class="about-prose__content active">
-                    {{ homePage.aboutProse1 | safe }}
-                    </div>
-                    <div class="about-prose__content">
-                    {{ homePage.aboutProse2 | safe }}
-                    </div>
-                </div>
-                <div class="about-testimonials section-row__right">
-                    <ul class="about-testimonials__list">
-                        {% for testimonial in homePage.testimonials %}
-                        <li>
-                            <div class="quote">
-                                {{ testimonial.body | safe }}
-                            </div>
-                            <p class="quotee">
-                                {{ testimonial.field_author }}
-                            </p>
-                            {% if testimonial.field_title %}
-                            <p class="position">
-                                {{ testimonial.field_title }}
-                            </p>
-                            {% endif %}
-                            {% if testimonial.field_affiliation %}
-                            <p class="affiliation">
-                                {{ testimonial.field_affiliation }}
-                            </p>
-                            {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </section>
-        {% endblock %}
-
-        {% block services_section %}
-        <section id="services" class="about-section">
-            <div class="section-row cf">
-                <div class="services-header section-row__left" style="background-image: url({{ homePage.servicesImageSource }})">
-                    <h1>{{ homePage.servicesTitle }}</h1>
-                </div>
-                <div class="services-byline section-row__right">
-                    <p class="services-section__text">{{ homePage.servicesByline }}</p>
-                </div>
-            </div>
-            <div class="section-row cf">
-                <ul class="services-list cf">
-                    {% for service in homePage.ourServices %}
-                    <li>
-                        <div class="services-list__item-header" style="background-image: url({{ service.image_tn }})">
-                            <p>{{ service.field_service_provided }}</p>
-                        </div>
-                        {{ service.body | safe }}
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </section>
-        {% endblock %}
-
-        {% block projects_section %}
-        <section id="projects" class="projects-section">
-            <div class="section-row cf">
-                <div class="projects-header section-row__left" >
-                    <h1>{{ homePage.projectsTitle }}</h1>
-                    <ul class="projects-filter">
-                        <li><a href="#" data-id="" data-filter="*">All</a></li>
-                        {% for category in homePage.projectsCategories %}
-                        <li>
-                            <a href="#" data-id="" data-filter="{{ category | makeIdentifier }}" >{{ category }}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="projects-byline section-row__right">
-                    <p class="projects-section__text">{{ homePage.projectsByline }}</p>
-                </div>
-            </div>
-            <div class="section-row cf auto-height">
-                <ul class="projects-list cf">
-                    {% for project in homePage.projects %}
-                    <li class="{% for category in project.categories %}{{ category | makeIdentifier }} {% endfor %} cf">
-                        <div class="projects-list__item-header" style="background-image: url({{ project.image_tn }})">
-                            <div class="projects-list__item-header-mask">
-                                <h2>{{ project.field_project_title }}</h2>
-                                <p>{{ project.field_project_overview }}</p>
-                            </div>
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="section-row auto-height">
-                <p class="section-postamble">{{ homePage.projectsPostamble }}</p>
-            </div>
-        </section>
-        {% endblock %}
-
-        {% block blog_section %}
-        <section id="blogs" class="blog-section">
-            <div class="section-row cf">
-                <div class="blog-header section-row__left" style="background-image: url({{ homePage.blogImageSource }})">
-                    <h1>{{ homePage.blogTitle }}</h1>
-                </div>
-                <div class="blog-byline section-row__right">
-                    <p class="blog-section__text">{{ homePage.blogByline }}</p>
-                </div>
-            </div>
-            <div class="section-row cf">
-                <ul class="blog-list">
-                    {% for index, blogpost in blogpostSummary %}
-                        {% if blogpost.blogIsFeatured %}
-                        <li>
-                            <a href="/blog/{{ blogpost.blogURL }}">
-                                <div class="blog-list__item-header" style="background-image: url({{ blogpost.blogTn }})">
-                                    <p>{{ blogpost.blogTitle }}</p>
-                                </div>
-                            </a>
-                            <div class="blog-info">
-                                <p>
-                                    by {% for index, author in blogpost.blogAuthors %}{{ author.title }}{% if not loop.last %}, {% endif %}{% endfor %}
-                                    <br>on {{ blogpost.blogDate | dateFilter("MMMM D, YYYY") }}
-                                </p>
-                            </div>
-                        </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="section-row auto-height">
-                <a class="blog-link section-postamble no-top" href="/blog/1">See all our blogs</a>
-            </div>
-        </section>
-        {% endblock %}
-
-        {% block contact_section %}
-        <section id="contact" class="contact-section">
-            <div class="section-row cf">
-                <div class="contact-header section-row__left" style="background-image: url({{ homePage.contactImageSource }})">
-                    <h1>{{ homePage.contactTitle }}</h1>
-                </div>
-                <div class="contact-byline section-row__right">
-                    <p class="blog-section__text">{{ homePage.contactByline }}</p>
-                </div>
-            </div>
-            <div class="section-row cf">
-                <div class="contact-form section-row__left" >
-                    <form name="contact" method="POST" netlify>
-                        <div class="form-element">
-                            <input type="text" name="name" placeholder="Your Name">
-                        </div>
-                        <div class="form-element"> 
-                            <input type="email" name="email"  placeholder="Your Email">
-                        </div>
-                        <div class="form-element">
-                            <textarea name="message" placeholder="Your Message"></textarea>
-                        </div>
-                        <div class="form-element">
-                            <button class="button button__primary" type="submit">Send</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="contact-info section-row__right">
-                    <ul class="contact-snippets adr">
-                        <li>
-                            <i class="icon icon-location"></i>
-                            <p>{{ homePage.contactAddressHeader }}</p>
-                            <p class="street-address">{{ homePage.contactStreet }}</p>
-                            <p class="locality">{{ homePage.contactCity }}, 
-                                <span class="region">{{ homePage.contactState }} </span>
-                                <span class="postal-code">{{ homePage.contactPostalCode }}</span>
-                            </p>
-                        </li>
-                        <li>
-                            <i class="icon icon-email"></i>
-                            <p>{{ homePage.contactEmailHeader }}</p>
-                            <p><a class="email" href="mailto:{{ homePage.contactEmail }}">{{ homePage.contactEmail }}</a></p>
-                        </li>
-                        <li>
-                            <i class="icon icon-phone"></i>
-                            <p>{{ homePage.contactPhoneHeader }}</p>
-                            <p><a class="tel" href="tel:{{ homePage.contactPhone }}">{{ homePage.contactPhone }}</a></p>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-        </section>
-        {% endblock %}
-    </div>
-
-    {% block footer %}
-        {% include "footer.html" %}
-    {% endblock %}
-
-    <a id="toTopButton" href="#onTop"><i class="icon icon-arrow-up"></i></a>
     
+    <!-- vue app wrapper -->
+    <div id="homePage">
+    
+        {% include "browser-upgrade.html" %}
+
+        <div class="header">
+            <div class="container">
+                {% include "header.html" %}
+            </div>
+        </div>
+
+        <div class="container">
+
+            {% block welcome_section %}
+            <section class="welcome-section">
+                <div class="welcome-section__header" style="background-image: url({{ homePage.bgImageSource }})">
+                    <h1>{{ homePage.siteName }}</h1>
+                </div>
+                <p class="welcome-section__text">{{ homePage.welcomeText | safe }}</p>
+            </section>
+            {% endblock %}
+
+            {% block about_section %}
+            <section id="about" class="about-section">
+                <div class="section-row cf">
+                    <div class="about-header section-row__left" style="background-image: url({{ homePage.aboutImageSource }})">
+                        <h1>{{ homePage.aboutTitle }}</h1>
+                    </div>
+                    <div class="about-byline section-row__right">
+                        <p class="about-section__text">{{ homePage.aboutByline }}</p>
+                    </div>
+                </div>
+                <div class="section-row cf">
+                    <div class="about-prose section-row__left">
+                        <ul class="about-prose__prose-selector">
+                            <li class="active">{{ homePage.aboutProse1Header}}</li>
+                            <li>{{ homePage.aboutProse2Header}}</li>
+                        </ul>
+                        <div class="about-prose__content active">
+                        {{ homePage.aboutProse1 | safe }}
+                        </div>
+                        <div class="about-prose__content">
+                        {{ homePage.aboutProse2 | safe }}
+                        </div>
+                    </div>
+                    <div class="about-testimonials section-row__right">
+                        <ul class="about-testimonials__list">
+                            {% for testimonial in homePage.testimonials %}
+                            <li>
+                                <div class="quote">
+                                    {{ testimonial.body | safe }}
+                                </div>
+                                <p class="quotee">
+                                    {{ testimonial.field_author }}
+                                </p>
+                                {% if testimonial.field_title %}
+                                <p class="position">
+                                    {{ testimonial.field_title }}
+                                </p>
+                                {% endif %}
+                                {% if testimonial.field_affiliation %}
+                                <p class="affiliation">
+                                    {{ testimonial.field_affiliation }}
+                                </p>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            {% endblock %}
+
+            {% block services_section %}
+            <section id="services" class="about-section">
+                <div class="section-row cf">
+                    <div class="services-header section-row__left" style="background-image: url({{ homePage.servicesImageSource }})">
+                        <h1>{{ homePage.servicesTitle }}</h1>
+                    </div>
+                    <div class="services-byline section-row__right">
+                        <p class="services-section__text">{{ homePage.servicesByline }}</p>
+                    </div>
+                </div>
+                <div class="section-row cf">
+                    <ul class="services-list cf">
+                        {% for service in homePage.ourServices %}
+                        <li>
+                            <div class="services-list__item-header" style="background-image: url({{ service.image_tn }})">
+                                <p>{{ service.field_service_provided }}</p>
+                            </div>
+                            {{ service.body | safe }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+            {% endblock %}
+
+            {% block projects_section %}
+            <section id="projects" class="projects-section">
+                <div class="section-row cf">
+                    <div class="projects-header section-row__left" >
+                        <h1>{{ homePage.projectsTitle }}</h1>
+                        <ul class="projects-filter">
+                            <li><a href="#" data-id="" data-filter="*">All</a></li>
+                            {% for category in homePage.projectsCategories %}
+                            <li>
+                                <a href="#" data-id="" data-filter="{{ category | makeIdentifier }}" >{{ category }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="projects-byline section-row__right">
+                        <p class="projects-section__text">{{ homePage.projectsByline }}</p>
+                    </div>
+                </div>
+                <div class="section-row cf auto-height">
+                    <ul class="projects-list cf">
+                        {% for project in homePage.projects %}
+                        <li class="{% for category in project.categories %}{{ category | makeIdentifier }} {% endfor %} cf">
+                            <div class="projects-list__item-header" style="background-image: url({{ project.image_tn }})">
+                                <div class="projects-list__item-header-mask">
+                                    <h2>{{ project.field_project_title }}</h2>
+                                    <p>{{ project.field_project_overview }}</p>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="section-row auto-height">
+                    <p class="section-postamble">{{ homePage.projectsPostamble }}</p>
+                </div>
+            </section>
+            {% endblock %}
+
+            {% block blog_section %}
+            <section id="blogs" class="blog-section">
+                <div class="section-row cf">
+                    <div class="blog-header section-row__left" style="background-image: url({{ homePage.blogImageSource }})">
+                        <h1>{{ homePage.blogTitle }}</h1>
+                    </div>
+                    <div class="blog-byline section-row__right">
+                        <p class="blog-section__text">{{ homePage.blogByline }}</p>
+                    </div>
+                </div>
+                <div class="section-row cf">
+                    <ul class="blog-list">
+                        {% for index, blogpost in blogpostSummary %}
+                            {% if blogpost.blogIsFeatured %}
+                            <li>
+                                <a href="/blog/{{ blogpost.blogURL }}">
+                                    <div class="blog-list__item-header" style="background-image: url({{ blogpost.blogTn }})">
+                                        <p>{{ blogpost.blogTitle }}</p>
+                                    </div>
+                                </a>
+                                <div class="blog-info">
+                                    <p>
+                                        by {% for index, author in blogpost.blogAuthors %}{{ author.title }}{% if not loop.last %}, {% endif %}{% endfor %}
+                                        <br>on {{ blogpost.blogDate | dateFilter("MMMM D, YYYY") }}
+                                    </p>
+                                </div>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="section-row auto-height">
+                    <a class="blog-link section-postamble no-top" href="/blog/1">See all our blogs</a>
+                </div>
+            </section>
+            {% endblock %}
+
+            {% block contact_section %}
+            <section id="contact" class="contact-section">
+                <div class="section-row cf">
+                    <div class="contact-header section-row__left" style="background-image: url({{ homePage.contactImageSource }})">
+                        <h1>{{ homePage.contactTitle }}</h1>
+                    </div>
+                    <div class="contact-byline section-row__right">
+                        <p class="blog-section__text">{{ homePage.contactByline }}</p>
+                    </div>
+                </div>
+                <div class="section-row cf">
+                    <div class="contact-form section-row__left" >
+                        <form name="contact" method="POST" netlify>
+                            <div class="form-element">
+                                <input type="text" name="name" placeholder="Your Name">
+                            </div>
+                            <div class="form-element"> 
+                                <input type="email" name="email"  placeholder="Your Email">
+                            </div>
+                            <div class="form-element">
+                                <textarea name="message" placeholder="Your Message"></textarea>
+                            </div>
+                            <div class="form-element">
+                                <button class="button button__primary" type="submit">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="contact-info section-row__right">
+                        <ul class="contact-snippets adr">
+                            <li>
+                                <i class="icon icon-location"></i>
+                                <p>{{ homePage.contactAddressHeader }}</p>
+                                <p class="street-address">{{ homePage.contactStreet }}</p>
+                                <p class="locality">{{ homePage.contactCity }}, 
+                                    <span class="region">{{ homePage.contactState }} </span>
+                                    <span class="postal-code">{{ homePage.contactPostalCode }}</span>
+                                </p>
+                            </li>
+                            <li>
+                                <i class="icon icon-email"></i>
+                                <p>{{ homePage.contactEmailHeader }}</p>
+                                <p><a class="email" href="mailto:{{ homePage.contactEmail }}">{{ homePage.contactEmail }}</a></p>
+                            </li>
+                            <li>
+                                <i class="icon icon-phone"></i>
+                                <p>{{ homePage.contactPhoneHeader }}</p>
+                                <p><a class="tel" href="tel:{{ homePage.contactPhone }}">{{ homePage.contactPhone }}</a></p>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+            {% endblock %}
+        </div>
+
+        {% block footer %}
+            {% include "footer.html" %}
+        {% endblock %}
+
+        <a id="toTopButton" href="#onTop"><i class="icon icon-arrow-up"></i></a>
+    
+    </div>
+    <!-- end vue app wrapper -->
+
     {% block body_scripts %}
         {% include "scripts.html" %}
     {% endblock %}

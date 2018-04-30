@@ -246,10 +246,8 @@ gulp.task("metalsmith", function (callback) {
 gulp.task("vendorScripts", function () {
     "use strict";
     return gulp.src([
-        "node_modules/jquery/dist/jquery.js",
-        "node_modules/jquery.easing/jquery.easing.js",
-        "node_modules/jquery-hoverintent/jquery.hoverIntent.js",
-        "node_modules/js-breakpoints/breakpoints.js"
+        "node_modules/vue/dist/vue.min.js",
+        "node_modules/velocity-animate/velocity.min.js"
     ])
         .pipe(concat("vendors.min.js"))
         .pipe(compressJS())
