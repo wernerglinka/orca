@@ -247,7 +247,8 @@ gulp.task("vendorScripts", function () {
     "use strict";
     return gulp.src([
         "node_modules/vue/dist/vue.min.js",
-        "node_modules/velocity-animate/velocity.min.js"
+        "node_modules/velocity-animate/velocity.min.js",
+        "node_modules/vueisotope/dist/vue_isotope.min.js"
     ])
         .pipe(concat("vendors.min.js"))
         .pipe(compressJS())

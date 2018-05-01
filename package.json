@@ -72,6 +72,7 @@
     "request": "2.85.0",
     "striptags": "3.1.1",
     "velocity-animate": "^1.5.1",
-    "vue": "^2.5.16"
+    "vue": "^2.5.16",
+    "vueisotope": "^3.1.2"
   }
 }

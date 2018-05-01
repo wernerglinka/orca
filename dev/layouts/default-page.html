@@ -13,7 +13,7 @@
 
         <div class="header">
             <div class="container">
-                {% include "header.html" %}
+                <homepage-nav></homepage-nav>
             </div>
         </div>
 
@@ -41,14 +41,20 @@
                 <div class="section-row cf">
                     <div class="about-prose section-row__left">
                         <ul class="about-prose__prose-selector">
-                            <li class="active">{{ homePage.aboutProse1Header}}</li>
-                            <li>{{ homePage.aboutProse2Header}}</li>
+                            <li @click="prose1Visible = true" :class="{isActive: prose1Visible}">{{ homePage.aboutProse1Header}}</li>
+                            <li @click="prose1Visible = false" :class="{isActive: !prose1Visible}">{{ homePage.aboutProse2Header}}</li>
                         </ul>
-                        <div class="about-prose__content active">
-                        {{ homePage.aboutProse1 | safe }}
-                        </div>
-                        <div class="about-prose__content">
-                        {{ homePage.aboutProse2 | safe }}
+                        <div class="about-prose__content-wrapper">
+                            <transition name="fade">
+                            <div v-show="prose1Visible" class="about-prose__content">
+                            {{ homePage.aboutProse1 | safe }}
+                            </div>
+                            </transition>
+                            <transition name="fade">
+                            <div  v-show="!prose1Visible" class="about-prose__content">
+                            {{ homePage.aboutProse2 | safe }}
+                            </div>
+                            </transition>
                         </div>
                     </div>
                     <div class="about-testimonials section-row__right">
@@ -239,7 +245,7 @@
             {% include "footer.html" %}
         {% endblock %}
 
-        <a id="toTopButton" href="#onTop"><i class="icon icon-arrow-up"></i></a>
+        <to-top></to-top>
     
     </div>
     <!-- end vue app wrapper -->
