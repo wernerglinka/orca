@@ -59,9 +59,7 @@ $filter-color: #ccc;
     width: 100%;
 
     li {
-        float: left;
         width: 25%;
-        vertical-align: top;
 
         @media (max-width: 600px) {
             width: 50%;

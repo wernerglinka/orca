@@ -248,8 +248,7 @@ gulp.task("vendorScripts", function () {
     return gulp.src([
         "node_modules/jquery/dist/jquery.js",
         "node_modules/jquery.easing/jquery.easing.js",
-        "node_modules/jquery-hoverintent/jquery.hoverIntent.js",
-        "node_modules/js-breakpoints/breakpoints.js"
+        "node_modules/isotope-layout/dist/isotope.pkgd.min.js"
     ])
         .pipe(concat("vendors.min.js"))
         .pipe(compressJS())

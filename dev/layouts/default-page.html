@@ -105,11 +105,11 @@
             <div class="section-row cf">
                 <div class="projects-header section-row__left" >
                     <h1>{{ homePage.projectsTitle }}</h1>
-                    <ul class="projects-filter">
-                        <li><a href="#" data-id="" data-filter="*">All</a></li>
+                    <ul id="filters" class="projects-filter">
+                        <li><a data-id="" data-filter="*">All</a></li>
                         {% for category in homePage.projectsCategories %}
                         <li>
-                            <a href="#" data-id="" data-filter="{{ category | makeIdentifier }}" >{{ category }}</a>
+                            <a data-id="" data-filter=".{{ category | makeIdentifier }}" >{{ category }}</a>
                         </li>
                         {% endfor %}
                     </ul>
@@ -119,9 +119,9 @@
                 </div>
             </div>
             <div class="section-row cf auto-height">
-                <ul class="projects-list cf">
+                <ul class="projects-list grid cf">
                     {% for project in homePage.projects %}
-                    <li class="{% for category in project.categories %}{{ category | makeIdentifier }} {% endfor %} cf">
+                    <li class="element-item {% for category in project.categories %} {{ category | makeIdentifier }} {% endfor %}">
                         <div class="projects-list__item-header" style="background-image: url({{ project.image_tn }})">
                             <div class="projects-list__item-header-mask">
                                 <h2>{{ project.field_project_title }}</h2>

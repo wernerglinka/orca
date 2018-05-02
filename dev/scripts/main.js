@@ -195,6 +195,20 @@
         hamburger.init();
         softScroll.init();
         toTopIcon.init();
+
+        // init Isotope
+        var $grid = $('.grid').isotope({
+            itemSelector: '.element-item'
+        });
+
+        // bind filter button click
+        $('#filters').on( 'click', 'a', function() {
+            var filterValue = $( this ).attr('data-filter');
+
+            console.log(filterValue);
+            // use filterFn if matches value
+            $grid.isotope({ filter: filterValue });
+        });
     });
     // end ready function
 }());
