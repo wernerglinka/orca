@@ -1,9 +1,7 @@
-
 /*global require, process, console, __dirname*/
 
 const path = require('path');
 const browserSync = require('browser-sync').create();
-
 
 const gulp = require('gulp');
 const sequence = require('gulp-sequence');
@@ -101,8 +99,7 @@ function setupMetalsmith(callback) {
 
     metalsmith(__dirname)
         .source(contentPath)
-        .destination
-        (destPath)
+        .destination(destPath)
         .clean(true)
 
         // create the build timestamp
@@ -211,7 +208,7 @@ function setupMetalsmith(callback) {
             "pattern": ":collections/:title"
         }))
 
-        // layout must be located behind permalinks for the categories and 
+        // layout must be located behind permalinks for the categories and
         // tags pager links to be formed properly
         .use(layouts({
             "engine": "nunjucks",

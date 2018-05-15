@@ -188,6 +188,30 @@
         };
     }(jQuery));
 
+    // function to manage the about prose section
+    const aboutProse = (function ($) {
+        'use strict';
+        let init = function () {
+            const proseSelectors = $('.about-prose__prose-selector').find('li');
+            const prosePanes = $('.about-prose__content-item');
+
+            proseSelectors.each(function () {
+                let thisSelector = $(this);
+                thisSelector.on('click', function () {
+                    proseSelectors.removeClass('active');
+                    thisSelector.addClass('active');
+                    let thisSelectorIndex = proseSelectors.index(thisSelector);
+                    prosePanes.hide();
+                    prosePanes.eq(thisSelectorIndex).fadeIn();
+                });
+            });
+        };
+
+        return {
+            init: init
+        }
+    }(jQuery));
+
     //the document ready function
     document.addEventListener("DOMContentLoaded", function (event) {
         initialScreenState.init();
@@ -195,6 +219,7 @@
         hamburger.init();
         softScroll.init();
         toTopIcon.init();
+        aboutProse.init();
 
         // init Isotope
         var $grid = $('.grid').isotope({

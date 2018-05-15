@@ -9,7 +9,7 @@ $about-height: 400px;
     background-position: center;
     background-repeat: no-repeat;
 
-   
+
     h1 {
         position: absolute;
         right: 0;
@@ -52,10 +52,17 @@ $about-height: 400px;
     }
 }
 .about-prose__content {
-    display: none;
+    position: relative;
 
-    &.active {
-        display: block;
+    .about-prose__content-item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+
+        &:first-child {
+            display: block;
+        }
     }
 }
 .about-testimonials {

@@ -40,11 +40,13 @@
                         <li class="active">{{ homePage.aboutProse1Header}}</li>
                         <li>{{ homePage.aboutProse2Header}}</li>
                     </ul>
-                    <div class="about-prose__content active">
-                    {{ homePage.aboutProse1 | safe }}
-                    </div>
                     <div class="about-prose__content">
-                    {{ homePage.aboutProse2 | safe }}
+                        <div class="about-prose__content-item">
+                        {{ homePage.aboutProse1 | safe }}
+                        </div>
+                        <div class="about-prose__content-item">
+                        {{ homePage.aboutProse2 | safe }}
+                        </div>
                     </div>
                 </div>
                 <div class="about-testimonials section-row__right">
@@ -191,7 +193,7 @@
                         <div class="form-element">
                             <input type="text" name="name" placeholder="Your Name">
                         </div>
-                        <div class="form-element"> 
+                        <div class="form-element">
                             <input type="email" name="email"  placeholder="Your Email">
                         </div>
                         <div class="form-element">
@@ -208,7 +210,7 @@
                             <i class="icon icon-location"></i>
                             <p>{{ homePage.contactAddressHeader }}</p>
                             <p class="street-address">{{ homePage.contactStreet }}</p>
-                            <p class="locality">{{ homePage.contactCity }}, 
+                            <p class="locality">{{ homePage.contactCity }},
                                 <span class="region">{{ homePage.contactState }} </span>
                                 <span class="postal-code">{{ homePage.contactPostalCode }}</span>
                             </p>
@@ -236,7 +238,7 @@
     {% endblock %}
 
     <a id="toTopButton" href="#onTop"><i class="icon icon-arrow-up"></i></a>
-    
+
     {% block body_scripts %}
         {% include "scripts.html" %}
     {% endblock %}
