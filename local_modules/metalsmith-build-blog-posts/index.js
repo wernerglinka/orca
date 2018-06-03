@@ -6,7 +6,8 @@ const fs = require('fs');
 const findFolder = require('node-find-folder');
 const path = require('path');
 const commonTags = require('common-tags');
-
+const getImage = require('get-image');
+const cheerio = require('cheerio');
 
 /**
  * Metalsmith plugin to prepare a yml data file from api data
@@ -216,7 +217,12 @@ function plugin() {
         for (let avatarIndex in allBlogpostsObj.included) {
             for (let foundAuthorsIndex in foundAuthors) {
                 if (allBlogpostsObj.included[avatarIndex].id === foundAuthors[foundAuthorsIndex].avatarID) {
-                    foundAuthors[foundAuthorsIndex].avatarURL = allBlogpostsObj.serverURL + allBlogpostsObj.included[avatarIndex].attributes.uri.url;
+                    // download the image to the local assets folder
+                    const imageURL = allBlogpostsObj.serverURL + allBlogpostsObj.included[avatarIndex].attributes.uri.url;
+                    const targetDir = "/assets/images/blog/";
+                    const imageName = getImage(imageURL, targetDir);
+
+                    foundAuthors[foundAuthorsIndex].avatarURL = targetDir + imageName;
                     delete foundAuthors[foundAuthorsIndex].avatarID
                 }
             }
@@ -251,11 +257,11 @@ function plugin() {
 
     /**
      * getBlogCategories.
-     * get the categories of this blogpost
+     * get the categories for this blogpost
      *
      * @param {obj}     objAll      all blogpost objects
      * @param {obj}     obj         this blogpost object
-     * @param {string}  taxonomy   the name of the taxonomy field, e.g. 'field_blog_tags' or 'field_blog_category'
+     * @param {string}  taxonomy    the name of the taxonomy field, e.g. 'field_blog_tags' or 'field_blog_category'
      *
      * @return {array}  categories for this blogpost
      */
@@ -285,6 +291,36 @@ function plugin() {
         categories = temp;
 
         return categories.sort();
+    };
+
+    /**
+     * getInlineImages
+     * get all inline image URLs, download them and store them in targetDir and change image sources to targetDir
+     * 
+     * @param {string} content     the blogpost body
+     * @param {string} remotePath  
+     * @param {string} targetDir   target directory path
+     * 
+     * @return {string} blogpost body with local image sources
+     */
+    const getInlineImages = (content, remotePath, targetDir) => {
+        // extract a image source urls 
+        const $ = cheerio.load(content);
+        const imgSources = [];
+        $('img').each(function (index, element) {
+            imgSources.push($(element).attr('src'));
+        });
+        // download the images
+        for (let i = 0; imgSources.length > i; i++) {
+            const imageURL = imgSources[i];
+            const targetDir = "/assets/images/blog/";
+            getImage(imageURL, targetDir);
+        }
+        // switch the image src to the local ones
+        const oldPath = new RegExp(remotePath, 'g');
+        const processedContent = content.replace(oldPath, targetDir);
+
+        return processedContent;
     };
 
 
@@ -320,12 +356,23 @@ function plugin() {
                 temp.blogIsFeatured = blogpost.attributes.field_blog_is_featured;
                 temp.blogDate = blogpost.attributes.field_blog_date;
                 temp.blogURL = blogpost.attributes.title.replace(/\.$/, "").replace(/\s+/g, '-').toLowerCase();
-                temp.blogTn = blogPostsObj.serverURL + getBlogTn(allImages, blogpost.relationships.field_blog_thumbnail.data.id);
+                //temp.blogTn = blogPostsObj.serverURL + getBlogTn(allImages, blogpost.relationships.field_blog_thumbnail.data.id);
+
+                // download the image to the local assets folder
+                const imageURL = blogPostsObj.serverURL + getBlogTn(allImages, blogpost.relationships.field_blog_thumbnail.data.id);
+                const targetDir = "/assets/images/blog/";
+                const imageName = getImage(imageURL, targetDir);
+
+                temp.blogTn = targetDir + imageName;
+
                 //temp.blogAuthor = getBlogAuthor(allAuthors, blogpost.relationships.field_blog_author.data);
                 //temp.blogAuthor.avatarURL = blogPostsObj.serverURL + getBlogTn(allImages, temp.blogAuthor.avatarID);
                 temp.blogCategories = getBlogCategories(blogPostsObj, blogpost, "field_blog_category");
                 temp.blogTags = getBlogCategories(blogPostsObj, blogpost, "field_blog_tags");
                 temp.blogAuthors = getBlogAuthorProfile(blogPostsObj, blogpost.id);
+
+                // extract inline-image info from body and download images
+                let processedBody = getInlineImages(blogpost.attributes.body.value, serverUrl + "/sites/default/files/blogpost-images/", targetDir);
 
                 // replace any trailing dot, convert spaces to dashes and lower case.
                 // key for the files array
@@ -338,7 +385,7 @@ function plugin() {
                     collection: "blog",
                     description: blogpost.attributes.body.summary,
                     page_classes: "blogpost",
-                    contents: new Buffer(blogpost.attributes.body.value),
+                    contents: new Buffer(processedBody),
                     tn: temp.blogTn,
                     date: temp.blogDate,
                     tags: temp.blogTags,

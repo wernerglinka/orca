@@ -38,6 +38,7 @@ const buildHomePage = require('./local_modules/metalsmith-build-home-page');
 const buildBlogPosts = require('./local_modules/metalsmith-build-blog-posts');
 
 const monitor = require('./local_modules/metalsmith-monitor');
+const message = require('./local_modules/metalsmith-message');
 
 // template engine
 const nunjucks = require("nunjucks");
@@ -119,9 +120,12 @@ function setupMetalsmith(callback) {
 
         // get the content from ORCA Server
         .use(buildHomePage())
-        .use(buildBlogPosts())
-
         //.use(monitor())
+        .use(message('done with homepage'))
+        .use(buildBlogPosts())
+        //.use(monitor())
+        .use(message('done with blogposts'))
+        
 
         //.use(() => {
         //    console.log(__dirname);
@@ -332,7 +336,6 @@ gulp.task("default", ["buildDev"], function () {
         "./dev/scripts/**/*",
         "./dev/styles/**/*",
         "./dev/content/**/*",
-        "./dev/layouts/**/*",
-        "./dev/sources/**/*"
+        "./dev/layouts/**/*"
     ], ["refresh"]);
 });

@@ -3,13 +3,14 @@
 
 const request = require('request');
 const fs = require('fs');
+const http = require('http');
 const findFolder = require('node-find-folder');
 const path = require('path');
 const commonTags = require('common-tags');
-
+const getImage = require('get-image');
 
 /**
- * Metalsmith plugin to prepare a yml data file from api data
+ * Metalsmith plugin to build the home page from api data
  */
 function plugin() {
     'use strict';
@@ -96,7 +97,7 @@ function plugin() {
         }
 
         // images are included via a node relationship to the image file
-        // we first build an array of all available images in the respionse json
+        // we first build an array of all images that are available in the response json
         // then we search all node relationships for the file name and when found
         // we'll find the url of the image
 
@@ -116,13 +117,19 @@ function plugin() {
                 // return the image url if the uudi matches the relID
                 for (let index in availableImages) {
                     if (availableImages[index].uuid === relID) {
-                        return obj.serverURL + availableImages[index].uri.url;
+
+                        // download the image to the local assets folder
+                        const imageURL = obj.serverURL + availableImages[index].uri.url;
+                        const targetDir = "/assets/images/homepage/";
+                        const imageName = getImage(imageURL, targetDir);
+
+                        return targetDir + imageName;
                     }
                 }
             }
         }
         // if we didn't find any match we'll log an error
-        console.log('\n >>>> No file name match in either attributes nor included relationships of the api response \n');
+        console.log('\n >>>> No file name match in neither attributes nor included relationships of the api response \n');
         return false;
     };
 
@@ -189,7 +196,12 @@ function plugin() {
         services.forEach(function (element) {
             availableImages.forEach(function (thisImage){
                 if (element.image_tn === thisImage.uuid) {
-                    element.image_tn = homePageObj.serverURL + thisImage.uri.url;
+                    // download the image to the local assets folder
+                    const imageURL = homePageObj.serverURL + thisImage.uri.url;
+                    const targetDir = "/assets/images/services/";
+                    const imageName = getImage(imageURL, targetDir);
+
+                    element.image_tn = targetDir + imageName;
                 }
             });
         });
@@ -241,7 +253,12 @@ function plugin() {
         projects.forEach(function (element) {
             availableImages.forEach(function (thisImage){
                 if (element.image_tn === thisImage.uuid) {
-                    element.image_tn = homePageObj.serverURL + thisImage.uri.url;
+                    // download the image to the local assets folder
+                    const imageURL = homePageObj.serverURL + thisImage.uri.url;
+                    const targetDir = "/assets/images/projects/";
+                    const imageName = getImage(imageURL, targetDir);
+
+                    element.image_tn = targetDir + imageName;;
                 }
             });
         });
