@@ -36,6 +36,7 @@ const postsList = require("./local_modules/metalsmith-blog-helper");
 
 const buildHomePage = require('./local_modules/metalsmith-build-home-page');
 const buildBlogPosts = require('./local_modules/metalsmith-build-blog-posts');
+const blogPostsList = require('./local_modules/metalsmith-blog-post-lists');
 
 const monitor = require('./local_modules/metalsmith-monitor');
 const message = require('./local_modules/metalsmith-message');
@@ -123,9 +124,11 @@ function setupMetalsmith(callback) {
         //.use(monitor())
         .use(message('done with homepage'))
         .use(buildBlogPosts())
+        .use(blogPostsList({
+            latest_quantity: 7
+        }))
         //.use(monitor())
         .use(message('done with blogposts'))
-        
 
         //.use(() => {
         //    console.log(__dirname);

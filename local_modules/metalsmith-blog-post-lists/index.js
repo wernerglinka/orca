@@ -13,17 +13,24 @@ function plugin(opts){
         var featuredBlogPosts = [];
         var allSortedBlogPosts = [];
         var temp = [];
+
+        options = opts === 'undefined' ? {} : opts;
         var options = [];
-        options.latest_quantity = opts.latest_quantity === 'undefined' ? 4 : opts.latest_quantity;
-        options.featured_blog_post_sort_order = opts.featured_blog_post_sort_order === 'undefinend' ? "asc" : opts.featured_blog_post_sort_order;
-        options.featured_quantity = opts.featured_quantity === 'undefined' ? 4 : opts.featured_quantity;
+        //options.latest_quantity = opts.latest_quantity === 'undefined' ? 4 : opts.latest_quantity;
+        //options.featured_blog_post_sort_order = opts.featured_blog_post_sort_order === 'undefinend' ? "asc" : opts.featured_blog_post_sort_order;
+        //options.featured_quantity = opts.featured_quantity === 'undefined' ? 4 : opts.featured_quantity;
+
+        //console.log(opts);
+        const { latest_quantity = 4, featured_blog_post_sort_order = 'asc', featured_quantity = 4 } = options;
+        console.log(latest_quantity, featured_blog_post_sort_order, featured_quantity);
+
 
         Object.keys(files).forEach(function(file){
 
             if ((file.indexOf('blog/') !== -1) && (file.indexOf('.md') !== -1)) {
 
                 // assemble all blogs list
-                // this list can be used when the whole list of blog posts is not available like
+                // this list can be used when the whole list of blog posts is not available on a page like
                 // when using pagination, NOT all blog posts will be available on a paginated page
                 temp = {
                     title:  files[file].title,
