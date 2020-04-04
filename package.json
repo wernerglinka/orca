@@ -63,7 +63,7 @@
     "metalsmith-sitemap": "1.2.0",
     "metalsmith-tags": "2.0.0",
     "metalsmith-writemetadata": "0.4.5",
-    "minimist": "1.2.0",
+    "minimist": "1.2.3",
     "moment": "2.21.0",
     "node-find-folder": "0.1.32",
     "normalize-css": "2.3.1",
